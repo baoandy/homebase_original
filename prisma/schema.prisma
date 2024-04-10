@@ -14,14 +14,28 @@ datasource db {
 }
 
 model Waitlist {
-  id         String   @id @default(uuid()) @map("_id") @db.Uuid
-  firstName  String
-  lastName   String
-  email      String   @unique
-  zipCode    String
-  inviteSent Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id           String    @id @default(uuid()) @map("_id") @db.Uuid
+  firstName    String
+  lastName     String
+  email        String    @unique
+  zipCode      String
+  inviteSent   Boolean   @default(false)
+  inviteSentAt DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
   @@map("WaitList")
+}
+
+model User {
+  id            String   @id @default(uuid()) @map("_id") @db.Uuid
+  name          String?
+  email         String   @unique
+  emailVerified Boolean? @default(false)
+  password      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
 }
