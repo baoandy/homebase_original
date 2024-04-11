@@ -21,21 +21,21 @@ import { env } from "@/lib/env";
 
 export default async function Hero() {
   return (
-    <div className="shadow-md bg-gradient-to-r from-primary-rgba-20 via-white to-white flex overflow-hidden relative flex-row items-start self-center px-16 pb-14 max-w-full text-white min-h-[524px] rounded-[32px] w-[1336px] max-md:px-5">
+    <div className="relative flex min-h-[524px] w-[1336px] max-w-full flex-row items-start self-center overflow-hidden rounded-[32px] bg-gradient-to-r from-primary-rgba-20 via-white to-white px-16 pb-14 text-white shadow-md max-md:px-5">
       {/* left side */}
-      <div className="flex flex-col justify-between gap-6 md:w-[50%] w-[100%]">
+      <div className="flex w-[100%] flex-col justify-between gap-6 md:w-[50%]">
         <div className="">
-          <h1 className="text-[36px] sm:text-[50px] sm:block hidden md:text-6xl  font-instrument font-bold leading-[120%] text-[#000F0B] max-w-[632px]   ">
+          <h1 className="font-instrument hidden max-w-[632px] text-[36px] font-bold  leading-[120%] text-[#000F0B] sm:block sm:text-[50px] md:text-6xl   ">
             <br />
             Make Your <span className="relative z-20  ">Mortgage</span>{" "}
             <span className="relative z-20  ">
               Rewarding <ChangeCardTextIcon />
             </span>
           </h1>
-          <h1 className="text-[30px] sm:hidden sm:text-[50px] md:text-6xl  font-instrument font-bold leading-[130%] text-[#000F0B] max-w-[632px]   ">
+          <h1 className="font-instrument max-w-[632px] text-[30px] font-bold  leading-[130%] text-[#000F0B] sm:hidden sm:text-[50px] md:text-6xl   ">
             <br />
             Make Your <span className="relative z-20  ">Mortgage</span>{" "}
-            <span className="flex items-center gap-2 relative">
+            <span className="relative flex items-center gap-2">
               Rewarding{" "}
               <span className="absolute -left-3 -top-5">
                 <ChanageTextIcon />
@@ -43,7 +43,7 @@ export default async function Hero() {
             </span>
           </h1>
         </div>
-        <div className="mt-10 text-[16px] sm:text-[16px] font-instrument font-normal leading-[155%] text-[#2A2A2C] ">
+        <div className="font-instrument mt-10 text-[16px] font-normal leading-[155%] text-[#2A2A2C] sm:text-[16px] ">
           <p>
             Unlock rewards while paying your mortgage hassle-free every month.{" "}
             <strong>NO</strong> hidden fees or service charges.{" "}
@@ -52,17 +52,17 @@ export default async function Hero() {
         </div>
         <div className="flex items-center gap-3 sm:gap-4">
           <WaitListButton apiSecretKey={env.API_SECRET_KEY} />
-          <div className="max-sm:w-[100px] max-sm:h-[40px] max-md:w-[120px] max-md:h-[48px] shadow-md  right-0 flex justify-center items-center overflow-hidden w-[160px] h-[64px] rounded-full bg-cover bg-center">
+          <div className="right-0 flex h-[64px] w-[160px] items-center  justify-center overflow-hidden rounded-full bg-cover bg-center shadow-md max-md:h-[48px] max-md:w-[120px] max-sm:h-[40px] max-sm:w-[100px]">
             <Image
               src={heroCards}
               alt=""
-              className="mx-9 drop-shadow-[0_3px_3px_rgba(0,0,0,0.9)] scale-[2]"
+              className="mx-9 scale-[2] drop-shadow-[0_3px_3px_rgba(0,0,0,0.9)]"
               width={400}
             />
           </div>
         </div>
         {/* user count */}
-        <div className="bg-white p-4 rounded-xl flex  items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-3 rounded-xl  bg-white p-4 sm:gap-4">
           <div className="flex items-center">
             <Image
               className="w-[36px] sm:w-[48px] "
@@ -70,21 +70,21 @@ export default async function Hero() {
               alt="user-img-1"
             />
             <Image
-              className="-ml-[9px] sm:-ml-4 w-[36px] sm:w-[48px]"
+              className="-ml-[9px] w-[36px] sm:-ml-4 sm:w-[48px]"
               src={userImg2}
               alt="user-img-2"
             />
             <Image
-              className="-ml-[9px] sm:-ml-4 w-[36px] sm:w-[48px] "
+              className="-ml-[9px] w-[36px] sm:-ml-4 sm:w-[48px] "
               src={userImg3}
               alt="user-img-3"
             />
           </div>
           <div>
-            <h5 className="text-[13px] sm:text-[18px]  font-instrument font-medium leading-[145%] text-black">
+            <h5 className="font-instrument text-[13px]  font-medium leading-[145%] text-black sm:text-[18px]">
               2k+
             </h5>
-            <p className="text-[10px] sm:text-[14px] font-instrument font-normal leading-[155%] text-[#757575]    ">
+            <p className="font-instrument text-[10px] font-normal leading-[155%] text-[#757575] sm:text-[14px]    ">
               Don’t Hesitate. Join Other Wait list Users Today!
             </p>
           </div>
@@ -92,20 +92,20 @@ export default async function Hero() {
       </div>
       {/* right side */}
       <div>
-        <div className=" hidden absolute bottom-0 md:flex flex-col items-center z-20 gap-6">
+        <div className=" absolute bottom-0 z-20 hidden flex-col items-center gap-6 md:flex">
           <Image
-            className="w-[208px] md:w-[300px] lg:w-[377px] mb-[-98px] md:mb-[-184px] lg:mb-[-217px]  ml-[-43px] md:ml-[-34px] z-10"
+            className="z-10 mb-[-98px] ml-[-43px] w-[208px] md:mb-[-184px] md:ml-[-34px]  md:w-[300px] lg:mb-[-217px] lg:w-[377px]"
             src={homeBaseCardImg}
             alt="cards img "
           />
           <Image
-            className="w-[700px] md:block hidden lg:w-[819px]"
+            className="hidden w-[700px] md:block lg:w-[819px]"
             src={handImg}
             alt="hand img "
           />
         </div>
         <svg
-          className="absolute right-0 bottom-0 hidden sm:block"
+          className="absolute bottom-0 right-0 hidden sm:block"
           // width="624"
           height="100%"
           viewBox="0 0 624 670"
