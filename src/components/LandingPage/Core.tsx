@@ -22,7 +22,7 @@ const Core: React.FC<Props> = ({ children }) => {
       <div className="core flex flex-col items-center justify-center gap-[50px] sm:gap-[74px] w-[1336px] bg-[#F1F1F1] rounded-[32px] py-9">
         {/* core heading */}
         <span className="max-w-[534px] lg:max-w-[634px] w-full text-center text-[#000F0B] font-instrument text-3xl sm:text-4xl lg:text-5xl font-bold leading-[110%] capitalize">
-          HomeBase Benefits
+          HomeBase Card Benefits
         </span>
 
         {/* core body */}
@@ -68,7 +68,8 @@ const Core: React.FC<Props> = ({ children }) => {
             <div className="flex items-center justify-start gap-1">
               <CoreTickIcon />
               <span className=" text-sm font-medium leading-[140%]">
-                Spend Management
+                Customized Home <br />
+                Financial Management
               </span>
             </div>
 
@@ -84,7 +85,7 @@ const Core: React.FC<Props> = ({ children }) => {
             <div className="flex items-center justify-start gap-1">
               <CoreTickIcon />
               <span className=" text-sm font-medium leading-[140%]">
-                Marketplace Offers
+                Unique and Personalized Offers
               </span>
             </div>
 
@@ -130,7 +131,8 @@ const Core: React.FC<Props> = ({ children }) => {
             <div className="relative flex flex-col items-start justify-center gap-1 lg:gap-[7px]">
               <CoreTickIcon />
               <span className=" text-xs md:text-base lg:text-xl xl:text-2xl font-medium leading-[140%]">
-                Spend Management
+                Customized Home <br />
+                Financial Management
               </span>
               {/* left bottom line */}
               <div className=" absolute top-[21%] xl:top-[21%] left-[32%] md:left-[27%] lg:left-[26%]">
@@ -158,7 +160,7 @@ const Core: React.FC<Props> = ({ children }) => {
             <div className="relative flex flex-col items-start justify-center gap-1 lg:gap-[7px]">
               <CoreTickIcon />
               <span className=" text-xs md:text-base lg:text-xl xl:text-2xl font-medium leading-[140%]">
-                Marketplace Offers
+                Personalized Offers
               </span>
               {/* right middle line */}
               <div className=" absolute top-[21%] right-[105%] lg:right-[110%]">

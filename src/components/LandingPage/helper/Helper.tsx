@@ -23,8 +23,8 @@ export const cardsData = [
   },
   {
     icon: <LockIcon />,
-    name: "Marketplace Benefits",
-    text: "Discover More Ways to Reward By Using with HomeBase Marketplace.",
+    name: "Seamless Experience",
+    text: "Simple and intuitive dashboard to manage your home and personal finances.",
   },
   {
     icon: <FastTransactionIcon />,

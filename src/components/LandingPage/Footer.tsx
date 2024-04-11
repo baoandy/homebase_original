@@ -1,6 +1,8 @@
 "use client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import LogoTransparent from "@/app/assets/LandingPage/LogoTransparent.png";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -8,18 +10,15 @@ export default function Footer() {
       <div className="self-stretch mt-3 mr-6 ml-6  max-md:max-w-full">
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
           <div className="flex flex-col w-[22%] max-md:ml-0 max-md:w-full">
-            <div className="flex flex-col grow text-base leading-6 text-sky-100 whitespace-nowrap max-md:mt-10">
-              {/* <img
+            <div className="flex flex-col items-center grow text-base leading-6 text-sky-100 whitespace-nowrap max-md:mt-10">
+              <Image
+                alt="HomeBase Logo"
                 loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/e620455d9956eb938821be78bd77f3051abb0052f90ab10b90ed931ba5d2dd7c?apiKey=f082dacefa12488dbded5c7e028d9a48&"
-                className="aspect-[5] w-[177px]"
-              /> */}
+                src={LogoTransparent}
+                className=""
+              />
               <div className="mt-4">Rewarding your world!</div>
-              {/* <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/eacc1217dc0376b22920c11024bc9f7696ecc3b383c12c17bc695caa41b3d3c4?apiKey=f082dacefa12488dbded5c7e028d9a48&"
-                className="mt-6 max-w-full aspect-[4] w-[118px]"
-              /> */}
+
               <div className="icon-container my-5 flex flex-row items-center justify-start gap-3 ">
                 {/* LinkedIn */}
                 <a
