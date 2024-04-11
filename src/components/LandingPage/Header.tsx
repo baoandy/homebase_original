@@ -97,7 +97,7 @@ export default function Header({}: HeaderProps) {
   };
 
   return (
-    <div className="sticky top-0 z-50 flex items-center justify-between px-14 py-5 w-full text-base leading-6 bg-white max-md:px-5">
+    <div className="sticky top-0 z-50 flex w-full items-center justify-between bg-white px-14 py-5 text-base leading-6 max-md:px-5">
       <div className="flex items-center gap-5">
         <Link href="/">
           <HBLogo />
@@ -130,19 +130,19 @@ export default function Header({}: HeaderProps) {
         </div>
       )} */}
 
-      <div className="hidden md:flex gap-4 font-semibold whitespace-nowrap">
+      {/* <div className="hidden gap-4 whitespace-nowrap font-semibold md:flex">
         <Link href="/register/service-user">
-          <button className="grow justify-center px-8 py-3.5 text-center rounded-lg border border-solid border-[color:var(--Primary-color,#366871)] text-[#366871] bg-white btn-outline hover:bg-[#366871]">
+          <button className="btn-outline grow justify-center rounded-lg border border-solid border-[color:var(--Primary-color,#366871)] bg-white px-8 py-3.5 text-center text-[#366871] hover:bg-[#366871]">
             SignUp
           </button>
         </Link>
 
         <Link href="/login">
-          <button className="border border-transparent grow justify-center px-8 py-3.5 text-center rounded-lg bg-[#366871] text-stone-50 hover:bg-white hover:text-[#366871] hover:border hover:border-solid hover:border-[color:var(--Primary-color,#366871)]">
+          <button className="grow justify-center rounded-lg border border-transparent bg-[#366871] px-8 py-3.5 text-center text-stone-50 hover:border hover:border-solid hover:border-[color:var(--Primary-color,#366871)] hover:bg-white hover:text-[#366871]">
             Login
           </button>
         </Link>
-      </div>
+      </div> */}
 
       <div className="md:hidden">
         <button
@@ -154,7 +154,7 @@ export default function Header({}: HeaderProps) {
       </div>
 
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white p-4">
+        <div className="absolute left-0 right-0 top-full bg-white p-4 md:hidden">
           <div className="flex flex-col gap-4">
             <Link href="/service" onClick={toggleMenu}>
               Marketplace
