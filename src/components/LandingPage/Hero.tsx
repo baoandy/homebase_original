@@ -92,7 +92,7 @@ export default async function Hero() {
       </div>
       {/* right side */}
       <div>
-        <div className=" absolute bottom-0 z-20 hidden flex-col items-center gap-6 md:flex">
+        <div className=" absolute bottom-0 z-10 hidden flex-col items-center gap-6 md:flex">
           <Image
             className="z-10 mb-[-98px] ml-[-43px] w-[208px] md:mb-[-184px] md:ml-[-34px]  md:w-[300px] lg:mb-[-217px] lg:w-[377px]"
             src={homeBaseCardImg}
