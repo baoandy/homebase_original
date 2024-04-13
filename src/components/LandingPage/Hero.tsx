@@ -27,14 +27,14 @@ export default async function Hero() {
         <div className="">
           <h1 className="font-instrument hidden max-w-[632px] text-[36px] font-bold  leading-[120%] text-[#000F0B] sm:block sm:text-[50px] md:text-6xl   ">
             <br />
-            Make Your <span className="relative z-20  ">Mortgage</span>{" "}
-            <span className="relative z-20  ">
+            Make Your <span className="relative">Mortgage</span>{" "}
+            <span className="relative  z-10">
               Rewarding <ChangeCardTextIcon />
             </span>
           </h1>
           <h1 className="font-instrument max-w-[632px] text-[30px] font-bold  leading-[130%] text-[#000F0B] sm:hidden sm:text-[50px] md:text-6xl   ">
             <br />
-            Make Your <span className="relative z-20  ">Mortgage</span>{" "}
+            Make Your <span className="relative z-10  ">Mortgage</span>{" "}
             <span className="relative flex items-center gap-2">
               Rewarding{" "}
               <span className="absolute -left-3 -top-5">
