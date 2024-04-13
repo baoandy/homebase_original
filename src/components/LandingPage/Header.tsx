@@ -97,7 +97,7 @@ export default function Header({}: HeaderProps) {
   };
 
   return (
-    <div className="sticky top-0 z-50 flex w-full items-center justify-between bg-white px-14 py-5 text-base leading-6 max-md:px-5">
+    <div className="sticky top-0 z-10 flex w-full items-center justify-between bg-white px-14 py-5 text-base leading-6 max-md:px-5">
       <div className="flex items-center gap-5">
         <Link href="/">
           <HBLogo />
