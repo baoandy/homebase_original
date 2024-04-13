@@ -16,6 +16,7 @@ import userImg1 from "@/app/assets/Home/img/userImg1.png";
 import userImg2 from "@/app/assets/Home/img/userImg2.png";
 import userImg3 from "@/app/assets/Home/img/userImg3.png";
 import WaitListButton from "../LandingPage/waitlist/WaitListButton";
+import DisplayWaitListButton from "./waitlist/DisplayWaitListButton";
 import Link from "next/link";
 import { env } from "@/lib/env";
 
@@ -51,7 +52,7 @@ export default async function Hero() {
           Compatible with <strong>99%</strong> of mortgage servicers nationwide.
         </div>
         <div className="flex items-center gap-3 sm:gap-4">
-          <WaitListButton apiSecretKey={env.API_SECRET_KEY} />
+          <DisplayWaitListButton apiSecretKey={env.API_SECRET_KEY} />
           <div className="right-0 flex h-[64px] w-[160px] items-center  justify-center overflow-hidden rounded-full bg-cover bg-center shadow-md max-md:h-[48px] max-md:w-[120px] max-sm:h-[40px] max-sm:w-[100px]">
             <Image
               src={heroCards}
