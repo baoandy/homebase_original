@@ -81,6 +81,9 @@ export default function SuccessModal({
       const result = await response.json();
       if (result.status === 200) {
         setWaitList(result.waitlist);
+        setReferralCode(result.waitlist.referralCode);
+        setPoints(result.points);
+        setReloadPoints(false);
         if (waitList?.monthlyMortgageAmount) {
           setSubmitted(true);
           setShowForm(false);
@@ -88,39 +91,8 @@ export default function SuccessModal({
       }
     }
     loadWaitlist();
-  }, [existingUser, email, apiSecretKey, waitList]);
-  useEffect(() => {
-    async function fetchReferralCode() {
-      const response = await fetch(
-        `/api/waitlist/fetch-referral-code/${email}`,
-        {
-          headers: {
-            secretKey: apiSecretKey,
-          },
-        },
-      );
-      const result = await response.json();
-      if (result.status === 200) {
-        setReferralCode(result.waitlist.referralCode);
-      }
-    }
-    fetchReferralCode();
-  }, [submitted, apiSecretKey, email]);
-  useEffect(() => {
-    async function loadPoints() {
-      const response = await fetch(`/api/waitlist/fetch-points/${email}`, {
-        headers: {
-          secretKey: apiSecretKey,
-        },
-      });
-      const result = await response.json();
-      if (result.status === 200) {
-        setPoints(result.points);
-        setReloadPoints(false);
-      }
-    }
-    loadPoints();
-  }, [submitted, email, apiSecretKey, reloadPoints]);
+  }, [existingUser, email, apiSecretKey, waitList, reloadPoints, submitted]);
+
   const handleCopy = () => {
     navigator.clipboard.writeText(
       `https://www.yourhomebase.co?ref=${referralCode}`,
