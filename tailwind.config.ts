@@ -14,6 +14,15 @@ const config: Config = {
         "primary-rgba-50": "rgba(54, 104, 113, 0.5)",
         "primary-rgba-20": "rgba(54, 104, 113, 0.2)",
       },
+      animation: {
+        slide: 'slide 150s linear infinite',
+      },
+      keyframes: {
+        slide: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        }
+      },
     },
   },
   daisyui: {

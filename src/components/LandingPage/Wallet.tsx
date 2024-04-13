@@ -7,6 +7,7 @@ import dashboardCardImg2 from "@/app/assets/Home/img/dashboardCardImg2.png";
 
 import creditCardImg from "@/app/assets/Home/img/creditCardImg.png";
 import mobileCardImg from "@/app/assets/Home/img/mobileCardImg.png";
+import PartnersCarusel from "./PartnersCarusel";
 
 interface Props {
   children?: React.ReactNode;
@@ -50,6 +51,7 @@ const Wallet: React.FC<Props> = ({ children }) => {
               </p>
             </div>
           </div>
+          <PartnersCarusel />
           <div className="p-10 flex flex-col items-center sm:gap-[55px] lg:flex-row justify-center max-w-[1336px] bg-[#F1F1F1] rounded-[32px] gap-9">
             <div className="max-w-[558px] w-full">
               <p className=" font-instrument font-bold text-[28px] sm:text-[48px] text-black leading-[32px] sm:leading-[52px] capitalize">
@@ -87,6 +89,7 @@ const Wallet: React.FC<Props> = ({ children }) => {
           </div>
         </div>
       </section>
+      
     </>
   );
 };

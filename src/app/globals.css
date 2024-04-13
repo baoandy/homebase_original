@@ -5,6 +5,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.hover\:pause:hover {
+  animation-play-state: paused;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -77,3 +81,5 @@ html {
     text-align: center;
   }
 }
+
+/* running partners line */

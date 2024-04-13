@@ -11,11 +11,7 @@ import {
 } from "./Icon";
 
 export const cardsData = [
-  {
-    icon: <Inerest0Icon />,
-    name: "No Late Interest",
-    text: "We Don’t Charge Late Interest Payments, Period.",
-  },
+ 
   {
     icon: <EarnRewardsIcon />,
     name: "Earn Rewards",
@@ -30,6 +26,11 @@ export const cardsData = [
     icon: <FastTransactionIcon />,
     name: "Easy Setup",
     text: "Get Set Up in Under a Minute with just 3 Simple Steps.",
+  },
+  {
+    icon: <Inerest0Icon />,
+    name: "No Late Interest",
+    text: "We Don’t Charge Late Interest Payments, Period.",
   },
 ];
 

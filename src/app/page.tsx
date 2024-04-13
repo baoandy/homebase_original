@@ -8,6 +8,7 @@ import Faq from "@/components/LandingPage/Faq";
 import Wallet from "@/components/LandingPage/Wallet";
 import Clientsay from "@/components/LandingPage/Clientsay";
 import WaitListButton from "@/components/LandingPage/waitlist/WaitListButton";
+import PartnersCarusel from "@/components/LandingPage/PartnersCarusel";
 
 export default function Home() {
   return (
