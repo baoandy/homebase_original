@@ -1,3 +1,4 @@
+"use server";
 import Image from "next/image";
 import { env } from "@/lib/env";
 
@@ -9,7 +10,7 @@ import Wallet from "@/components/LandingPage/Wallet";
 import Clientsay from "@/components/LandingPage/Clientsay";
 import WaitListButton from "@/components/LandingPage/waitlist/WaitListButton";
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
       {/* <PageSEO title="Home page" /> this doesn't seem to change the title */}
