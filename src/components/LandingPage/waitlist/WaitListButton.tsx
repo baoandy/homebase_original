@@ -358,7 +358,7 @@ export default function WaitListButton({
                             disabled={hadReferral}
                             type="text"
                             className="input input-bordered text-gray-900"
-                            placeholder="Referred By Code"
+                            placeholder="Referral Code"
                             onChange={(e) => {
                               const inputValue = e.target.value;
                               const formattedValue = inputValue
