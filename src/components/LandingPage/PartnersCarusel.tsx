@@ -104,24 +104,25 @@ const partnerImgs = [
 
 const PartnersCarousel: React.FC = () => {
   return (
-    // 
-    <div className="max-w-[1325px] flex flex-col items-center justify-center gap-16 overflow-hidden">
+    //
+    <div className="flex w-full max-w-[1325px] flex-col items-center justify-center gap-16 overflow-hidden px-10">
       <div className="flex flex-col text-center">
         <p className="font-instrument text-[28px] font-bold capitalize leading-[32px] text-black sm:text-[48px] sm:leading-[52px] ">
-          HomeBase Reward Partners
+          HomeBase <br className="lg:hidden" />
+          Reward Partners
         </p>
-        <p className="text-[16px] font-instrument font-normal pt-[16px] text-black leading-[24px] opacity-[0.8]">
+        <p className="font-instrument pt-[16px] text-[16px] font-normal leading-[24px] text-black opacity-[0.8]">
           HomeBase points can be transferred to reward points with our partner
           programs, or redeemed for gift cards from our merchant partners.
         </p>
       </div>
-      <div className="animate-slide hover:pause flex gap-16 whitespace-nowrap">
+      <div className="hover:pause flex h-14 animate-slide gap-16 whitespace-nowrap">
         {partnerImgs.concat(partnerImgs).map((img, index) => (
           <Image
             key={index}
             src={img}
             alt={`Partner ${index + 1}`}
-            height={60}
+            className="h-3/4"
           />
         ))}
       </div>
