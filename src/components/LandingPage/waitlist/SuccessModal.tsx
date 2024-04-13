@@ -520,6 +520,13 @@ export default function SuccessModal({
                               All awarded points will be redeemable upon
                               successful credit card application and issuance.
                             </p>
+                            <a
+                              href="/files/HomeBaseWaitlistTermsOfUse.html"
+                              target="_blank"
+                              className="font-semilight text-xs text-gray-600"
+                            >
+                              Terms and Conditions
+                            </a>
                           </form>
                         </>
                       )}
