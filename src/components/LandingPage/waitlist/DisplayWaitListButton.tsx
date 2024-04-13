@@ -11,8 +11,10 @@ export default function DisplayWaitListButton({
   apiSecretKey,
 }: WaitListButtonProps) {
   return (
-    <Suspense>
-      <WaitListButton className={className} apiSecretKey={apiSecretKey} />
-    </Suspense>
+    <>
+      <Suspense>
+        <WaitListButton className={className} apiSecretKey={apiSecretKey} />
+      </Suspense>
+    </>
   );
 }
