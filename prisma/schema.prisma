@@ -32,18 +32,115 @@ model Waitlist {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
-  @@map("WaitList")
+  @@map("waitlist")
 }
 
 model User {
-  id            String   @id @default(uuid()) @map("_id") @db.Uuid
-  name          String?
-  email         String   @unique
-  emailVerified Boolean? @default(false)
-  password      String?
+  id              String           @id @default(cuid())
+  firstName       String?
+  middleInitial   String?
+  lastName        String?
+  email           String           @unique
+  emailVerified   DateTime?
+  phoneNumber     String?
+  dateOfBirth     DateTime?
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
+  cardApplication CardApplication?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("users")
+  addresses Address[]
+
+  @@map("user")
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("account")
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("session")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@id([identifier, token])
+  @@map("verification_token")
+}
+
+model CardApplication {
+  id                     String   @id @default(cuid())
+  userId                 String   @unique
+  user                   User     @relation(fields: [userId], references: [id])
+  status                 String
+  currentAddressId       String?  @db.Uuid
+  currentAddress         Address? @relation("CurrentAddress", fields: [currentAddressId], references: [id])
+  mortgageAddressId      String?  @db.Uuid
+  mortgageAddress        Address? @relation("MortgageAddress", fields: [mortgageAddressId], references: [id])
+  employmentStatus       String?
+  companyName            String?
+  jobTitle               String?
+  annualIncome           Float?
+  mortgageAmount         Float?
+  yearMortgageOriginated Int?
+  ssid                   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("card_application")
+}
+
+model Address {
+  id        String   @id @default(uuid()) @map("_id") @db.Uuid
+  userId    String
+  address1  String
+  address2  String
+  city      String
+  state     String
+  zipCode   String
+  country   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentAddress  CardApplication[] @relation("CurrentAddress")
+  mortgageAddress CardApplication[] @relation("MortgageAddress")
+
+  @@map("address")
 }

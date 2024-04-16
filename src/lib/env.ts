@@ -5,6 +5,7 @@ const envSchema = zod.object({
   DATABASE_URL: zod.string().min(1),
   API_SECRET_KEY: zod.string().min(1),
   SENDGRID_API_KEY: zod.string().min(1),
+  GOOGLE_PLACES_API_KEY: zod.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);
