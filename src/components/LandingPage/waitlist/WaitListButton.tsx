@@ -7,6 +7,11 @@ import { Dialog, Transition } from "@headlessui/react";
 import { set } from "zod";
 import { CheckIcon, ClipboardDocumentIcon } from "@heroicons/react/20/solid";
 import SuccessModal from "./SuccessModal";
+import { ModalLogoIcon } from "@/components/LandingPage/helper/Icon";
+import modalmainImage from "@/app/assets/JoinWaitListModal/modal-main-image.png";
+import Image from "next/image";
+import TermsAndConditions from "@/components/LandingPage/waitlist/JoinWaitListButton/TermsAndConditions";
+import { ModalCloseIcon } from "@/components/LandingPage/helper/Icon";
 import {
   useRouter,
   usePathname,
@@ -41,6 +46,8 @@ export default function WaitListButton({
   const [hadReferral, setHadReferral] = useState(false);
   const [referredByCode, setReferredByCode] = useState(search ? search : "");
   const [existingUser, setExistingUser] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -113,15 +120,15 @@ export default function WaitListButton({
     refCode();
   }, [search, setValue]);
   return (
-    <div className="">
+    <>
       <button
         onClick={() => setShowModal(true)}
-        className={`font-instrument h-[59px] w-full max-w-[328px] rounded-md border-2 border-transparent bg-primary text-[18px] font-semibold leading-[150%] text-white transition duration-300 ease-in-out hover:border-primary hover:bg-white hover:text-primary  sm:w-[196px] sm:max-w-full ${className}`}
+        className={`font-instrument h-[59px] w-full max-w-[328px] rounded-md border-2 border-transparent bg-primary text-[18px] font-semibold leading-[150%] text-white transition duration-300 ease-in-out hover:border-primary hover:bg-white hover:text-primary max-sm:px-4  sm:w-[196px] sm:max-w-full`}
       >
         Join the Waitlist
       </button>
       <Transition.Root show={showModal} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={setShowModal}>
+        <Dialog as="div" className="relative z-50" onClose={setShowModal}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -131,284 +138,325 @@ export default function WaitListButton({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <div className="fixed inset-0 h-screen bg-black/25" />
           </Transition.Child>
 
-          <div className="fixed inset-0 z-50 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="fixed inset-0">
+            <div className="flex min-h-full items-center justify-center px-4 py-1 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
-                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
-                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="relative z-50 transform overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 text-left shadow-xl transition-all sm:my-8 sm:max-w-sm sm:p-6 md:max-w-md lg:max-w-lg">
-                  <div>
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary">
-                      <ClipboardDocumentIcon className="h-8 w-8 text-white" />
-                    </div>
-                    <div className="mt-3 text-center sm:mt-5">
-                      <Dialog.Title
-                        as="h3"
-                        className="text-base font-semibold leading-6 text-gray-900"
-                      >
-                        Join the Waitlist!
-                        <p className="font-semilight text-xs text-gray-600">
-                          Get 250 points for signing up to the waitlist today.
-                        </p>
-                      </Dialog.Title>
-                      <form onSubmit={handleSubmit(onSubmit)} className="my-4">
-                        <div className="mb-5">
-                          <Controller
-                            name="firstName"
-                            control={control}
-                            defaultValue=""
-                            rules={{
-                              required: "First Name is required",
-                              pattern: {
-                                value: /^[a-zA-Z]+$/,
-                                message:
-                                  "Please enter a valid first name (only letters allowed)",
-                              },
-                            }}
-                            render={({ field, fieldState: { error } }) => (
-                              <>
-                                <input
-                                  {...field}
-                                  type="text"
-                                  className={`input input-bordered text-gray-900 ${
-                                    error ? "input-error" : ""
-                                  }`}
-                                  placeholder="First Name"
-                                  onChange={(e) => {
-                                    field.onChange(e);
-                                    setError("");
-                                  }}
-                                />
-                                {error && (
-                                  <div className="mt-1 text-sm text-red-500">
-                                    {error.message}
-                                  </div>
-                                )}
-                              </>
-                            )}
-                          />
-                        </div>
-
-                        <div className="mb-5">
-                          <Controller
-                            name="lastName"
-                            control={control}
-                            defaultValue=""
-                            rules={{
-                              required: "Last Name is required",
-                              pattern: {
-                                value: /^[a-zA-Z\s.-]+$/,
-                                message:
-                                  "Please enter a valid last name (only letters, spaces, hyphens, and periods allowed)",
-                              },
-                            }}
-                            render={({ field, fieldState: { error } }) => (
-                              <>
-                                <input
-                                  {...field}
-                                  type="text"
-                                  className={`input input-bordered text-gray-900 ${
-                                    error ? "input-error" : ""
-                                  }`}
-                                  placeholder="Last Name"
-                                  onChange={(e) => {
-                                    field.onChange(e);
-                                    setError("");
-                                  }}
-                                />
-                                {error && (
-                                  <div className="mt-1 text-sm text-red-500">
-                                    {error.message}
-                                  </div>
-                                )}
-                              </>
-                            )}
-                          />
-                        </div>
-                        <div className="mb-5">
-                          <Controller
-                            name="email"
-                            control={control}
-                            defaultValue=""
-                            rules={{
-                              required: "Email is required",
-                              pattern: {
-                                value:
-                                  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                                message: "Please enter a valid email address",
-                              },
-                            }}
-                            render={({ field, fieldState: { error } }) => (
-                              <>
-                                <input
-                                  {...field}
-                                  type="email"
-                                  className={`input input-bordered text-gray-900 ${
-                                    error ? "input-error" : ""
-                                  }`}
-                                  placeholder="Email"
-                                  onChange={(e) => {
-                                    field.onChange(e);
-                                    setError("");
-                                  }}
-                                />
-                                {error && (
-                                  <div className="mt-1 text-sm text-red-500">
-                                    {error.message}
-                                  </div>
-                                )}
-                              </>
-                            )}
-                          />
-                        </div>
-                        <div className="mb-5">
-                          <Controller
-                            name="phoneNumber"
-                            control={control}
-                            defaultValue=""
-                            rules={{
-                              required: "Phone Number is required",
-                              pattern: {
-                                value: /^\d{10}$/,
-                                message:
-                                  "Please enter a valid 10-digit phone number",
-                              },
-                            }}
-                            render={({ field, fieldState: { error } }) => (
-                              <>
-                                <input
-                                  {...field}
-                                  type="tel"
-                                  className={`input input-bordered text-gray-900 ${
-                                    error ? "input-error" : ""
-                                  }`}
-                                  placeholder="Phone Number"
-                                  onChange={(e) => {
-                                    const inputValue = e.target.value;
-                                    const formattedValue = inputValue
-                                      .replace(/\D/g, "")
-                                      .slice(0, 10);
-                                    field.onChange(formattedValue);
-                                    setError("");
-                                  }}
-                                  maxLength={10}
-                                />
-                                {error && (
-                                  <div className="mt-1 text-sm text-red-500">
-                                    {error.message}
-                                  </div>
-                                )}
-                              </>
-                            )}
-                          />
-                        </div>
-                        <div className="mb-5">
-                          <Controller
-                            name="zipCode"
-                            control={control}
-                            defaultValue=""
-                            rules={{
-                              required: "Zip Code is required",
-                              pattern: {
-                                value: /^[0-9]{5}$/,
-                                message:
-                                  "Please enter a valid 5-digit zip code",
-                              },
-                            }}
-                            render={({ field, fieldState: { error } }) => (
-                              <>
-                                <input
-                                  {...field}
-                                  type="text"
-                                  className={`input input-bordered text-gray-900 ${
-                                    error ? "input-error" : ""
-                                  }`}
-                                  placeholder="Zip Code"
-                                  onChange={(e) => {
-                                    const inputValue = e.target.value;
-                                    const formattedValue = inputValue
-                                      .replace(/\D/g, "")
-                                      .slice(0, 5); // Remove non-digit characters and limit to 5 digits
-                                    field.onChange(formattedValue);
-                                    setError("");
-                                  }}
-                                  maxLength={5}
-                                />
-                                {error && (
-                                  <div className="mt-1 text-sm text-red-500">
-                                    {error.message}
-                                  </div>
-                                )}
-                              </>
-                            )}
-                          />
-                        </div>
-                        <div className="mb-5">
-                          <input
-                            value={referredByCode}
-                            disabled={hadReferral}
-                            type="text"
-                            className="input input-bordered text-gray-900"
-                            placeholder="Referral Code"
-                            onChange={(e) => {
-                              const inputValue = e.target.value;
-                              const formattedValue = inputValue
-                                .replace(/\W/g, "")
-                                .slice(0, 6); // Remove non-alphanumeric characters and limit to 6 characters
-                              setReferredByCode(formattedValue);
-                              setError("");
-                            }}
-                          />
-                        </div>
+                <Dialog.Panel className="flex h-[calc(100vh-55px)]  w-full items-center md:max-w-[1140px] ">
+                  <div className="scroll_bar_model max-h-full w-full transform overflow-auto rounded-2xl text-left  align-middle shadow-xl transition-all lg:max-w-[1140px] lg:rounded-[32px]">
+                    {!showTerms && (
+                      <span className=" fixed right-3 top-6 z-50 flex items-start justify-end bg-transparent">
                         <button
-                          type="submit"
-                          className="btn btn-outline btn-primary inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold  shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                          type="button"
+                          className="z-20ease-in-out bg-transparent transition duration-300 hover:rotate-180"
+                          onClick={() => setShowModal(false)}
                         >
-                          {!loading ? (
-                            "Submit"
-                          ) : (
-                            <span className="loading loading-spinner"></span>
-                          )}
+                          <ModalCloseIcon />
                         </button>
-                        {error && (
-                          <div className="alert alert-error mt-3 flex h-10">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-6 w-6 stroke-current"
-                              fill="none"
-                              viewBox="0 0 24 24"
+                      </span>
+                    )}
+
+                    <div
+                      className={`${
+                        showModal ? "block" : "hidden"
+                      } flex h-full w-full items-start bg-[#ebf0f1]`}
+                    >
+                      <div className="flex h-full w-full flex-col items-center justify-end gap-[30px] bg-white pb-[15px] pt-10 max-lg:p-4 md:max-w-[50%] md:pt-20 lg:pt-[152px]">
+                        <ModalLogoIcon />
+                        <div className="flex w-full flex-col gap-7">
+                          <div className="flex w-full flex-col gap-6">
+                            <form
+                              onSubmit={handleSubmit(onSubmit)}
+                              className="mb-0 mt-4"
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                            <span>{error}</span>
+                              <div className="mb-5">
+                                <Controller
+                                  name="firstName"
+                                  control={control}
+                                  defaultValue=""
+                                  rules={{
+                                    required: "First Name is required",
+                                    pattern: {
+                                      value: /^[a-zA-Z]+$/,
+                                      message:
+                                        "Please enter a valid first name (only letters allowed)",
+                                    },
+                                  }}
+                                  render={({
+                                    field,
+                                    fieldState: { error },
+                                  }) => (
+                                    <>
+                                      <input
+                                        {...field}
+                                        type="text"
+                                        className={`font-nunito placeholder:font-nunito mx-auto flex w-full items-center rounded-md border-[1.5px] !border-[rgba(6,45,52,0.30)] bg-gray-100 text-[16px] font-normal  leading-normal text-[#82979B] !shadow-none !outline-none !ring !ring-transparent !ring-offset-0 placeholder:text-base placeholder:text-[#82979B] focus:bg-[#F8FFFF] focus:!shadow-none focus:outline-none md:w-[300px] lg:w-[376px] ${
+                                          error ? "input-error" : ""
+                                        }`}
+                                        placeholder="First Name"
+                                        onChange={(e) => {
+                                          field.onChange(e);
+                                          setError("");
+                                        }}
+                                      />
+                                      {error && (
+                                        <div className="font-nunito placeholder:font-nunito mx-auto mt-1 flex w-full items-center text-sm text-red-500  md:w-[300px] lg:w-[376px]">
+                                          {error.message}
+                                        </div>
+                                      )}
+                                    </>
+                                  )}
+                                />
+                              </div>
+
+                              <div className="mb-5">
+                                <Controller
+                                  name="lastName"
+                                  control={control}
+                                  defaultValue=""
+                                  rules={{
+                                    required: "Last Name is required",
+                                    pattern: {
+                                      value: /^[a-zA-Z\s.-]+$/,
+                                      message:
+                                        "Please enter a valid last name (only letters, spaces, hyphens, and periods allowed)",
+                                    },
+                                  }}
+                                  render={({
+                                    field,
+                                    fieldState: { error },
+                                  }) => (
+                                    <>
+                                      <input
+                                        {...field}
+                                        type="text"
+                                        className={`font-nunito placeholder:font-nunito mx-auto flex w-full items-center rounded-md border-[1.5px] !border-[rgba(6,45,52,0.30)] bg-gray-100 text-[16px] font-normal  leading-normal text-[#82979B] !shadow-none !outline-none !ring !ring-transparent !ring-offset-0 placeholder:text-base placeholder:text-[#82979B] focus:bg-[#F8FFFF] focus:!shadow-none focus:outline-none md:w-[300px] lg:w-[376px] ${
+                                          error ? "input-error" : ""
+                                        }`}
+                                        placeholder="Last Name"
+                                        onChange={(e) => {
+                                          field.onChange(e);
+                                          setError("");
+                                        }}
+                                      />
+                                      {error && (
+                                        <div className="font-nunito placeholder:font-nunito mx-auto mt-1 flex w-full items-center text-sm text-red-500  md:w-[300px] lg:w-[376px]">
+                                          {error.message}
+                                        </div>
+                                      )}
+                                    </>
+                                  )}
+                                />
+                              </div>
+                              <div className="mb-5">
+                                <Controller
+                                  name="email"
+                                  control={control}
+                                  defaultValue=""
+                                  rules={{
+                                    required: "Email is required",
+                                    pattern: {
+                                      value:
+                                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                      message:
+                                        "Please enter a valid email address",
+                                    },
+                                  }}
+                                  render={({
+                                    field,
+                                    fieldState: { error },
+                                  }) => (
+                                    <>
+                                      <input
+                                        {...field}
+                                        type="email"
+                                        className={`font-nunito placeholder:font-nunito mx-auto flex w-full items-center rounded-md border-[1.5px] !border-[rgba(6,45,52,0.30)] bg-gray-100 text-[16px] font-normal  leading-normal text-[#82979B] !shadow-none !outline-none !ring !ring-transparent !ring-offset-0 placeholder:text-base placeholder:text-[#82979B] focus:bg-[#F8FFFF] focus:!shadow-none focus:outline-none md:w-[300px] lg:w-[376px] ${
+                                          error ? "input-error" : ""
+                                        }`}
+                                        placeholder="Email"
+                                        onChange={(e) => {
+                                          field.onChange(e);
+                                          setError("");
+                                        }}
+                                      />
+                                      {error && (
+                                        <div className="font-nunito placeholder:font-nunito mx-auto mt-1 flex w-full items-center text-sm text-red-500  md:w-[300px] lg:w-[376px]">
+                                          {error.message}
+                                        </div>
+                                      )}
+                                    </>
+                                  )}
+                                />
+                              </div>
+                              <div className="mb-5">
+                                <Controller
+                                  name="phoneNumber"
+                                  control={control}
+                                  defaultValue=""
+                                  rules={{
+                                    required: "Phone Number is required",
+                                    pattern: {
+                                      value: /^\d{10}$/,
+                                      message:
+                                        "Please enter a valid 10-digit phone number",
+                                    },
+                                  }}
+                                  render={({
+                                    field,
+                                    fieldState: { error },
+                                  }) => (
+                                    <>
+                                      <input
+                                        {...field}
+                                        type="tel"
+                                        className={`font-nunito placeholder:font-nunito mx-auto flex w-full items-center rounded-md border-[1.5px] !border-[rgba(6,45,52,0.30)] bg-gray-100 text-[16px] font-normal  leading-normal text-[#82979B] !shadow-none !outline-none !ring !ring-transparent !ring-offset-0 placeholder:text-base placeholder:text-[#82979B] focus:bg-[#F8FFFF] focus:!shadow-none focus:outline-none md:w-[300px] lg:w-[376px] ${
+                                          error ? "input-error" : ""
+                                        }`}
+                                        placeholder="Phone Number"
+                                        onChange={(e) => {
+                                          const inputValue = e.target.value;
+                                          const formattedValue = inputValue
+                                            .replace(/\D/g, "")
+                                            .slice(0, 10);
+                                          field.onChange(formattedValue);
+                                          setError("");
+                                        }}
+                                        maxLength={10}
+                                      />
+                                      {error && (
+                                        <div className="font-nunito placeholder:font-nunito mx-auto mt-1 flex w-full items-center text-sm text-red-500  md:w-[300px] lg:w-[376px]">
+                                          {error.message}
+                                        </div>
+                                      )}
+                                    </>
+                                  )}
+                                />
+                              </div>
+                              <div className="mb-5">
+                                <Controller
+                                  name="zipCode"
+                                  control={control}
+                                  defaultValue=""
+                                  rules={{
+                                    required: "Zip Code is required",
+                                    pattern: {
+                                      value: /^[0-9]{5}$/,
+                                      message:
+                                        "Please enter a valid 5-digit zip code",
+                                    },
+                                  }}
+                                  render={({
+                                    field,
+                                    fieldState: { error },
+                                  }) => (
+                                    <>
+                                      <input
+                                        {...field}
+                                        type="text"
+                                        className={`font-nunito placeholder:font-nunito mx-auto flex w-full items-center rounded-md border-[1.5px] !border-[rgba(6,45,52,0.30)] bg-gray-100 text-[16px] font-normal  leading-normal text-[#82979B] !shadow-none !outline-none !ring !ring-transparent !ring-offset-0 placeholder:text-base placeholder:text-[#82979B] focus:bg-[#F8FFFF] focus:!shadow-none focus:outline-none md:w-[300px] lg:w-[376px] ${
+                                          error ? "input-error" : ""
+                                        }`}
+                                        placeholder="Zip Code"
+                                        onChange={(e) => {
+                                          const inputValue = e.target.value;
+                                          const formattedValue = inputValue
+                                            .replace(/\D/g, "")
+                                            .slice(0, 5); // Remove non-digit characters and limit to 5 digits
+                                          field.onChange(formattedValue);
+                                          setError("");
+                                        }}
+                                        maxLength={5}
+                                      />
+                                      {error && (
+                                        <div className="font-nunito placeholder:font-nunito mx-auto mt-1 flex w-full items-center text-sm text-red-500  md:w-[300px] lg:w-[376px]">
+                                          {error.message}
+                                        </div>
+                                      )}
+                                    </>
+                                  )}
+                                />
+                              </div>
+                              <div className="mb-5">
+                                <input
+                                  value={referredByCode}
+                                  disabled={hadReferral}
+                                  type="text"
+                                  className="font-nunito placeholder:font-nunito mx-auto flex w-full items-center rounded-md border-[1.5px] !border-[rgba(6,45,52,0.30)] bg-gray-100 text-[16px] font-normal  leading-normal text-[#82979B] !shadow-none !outline-none !ring !ring-transparent !ring-offset-0 placeholder:text-base placeholder:text-[#82979B] focus:bg-[#F8FFFF] focus:!shadow-none focus:outline-none md:w-[300px] lg:w-[376px]"
+                                  placeholder="Referral Code"
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
+                                    const formattedValue = inputValue
+                                      .replace(/\W/g, "")
+                                      .slice(0, 6); // Remove non-alphanumeric characters and limit to 6 characters
+                                    setReferredByCode(formattedValue);
+                                    setError("");
+                                  }}
+                                />
+                              </div>
+                              <div className="mb-5 flex self-center">
+                                <button
+                                  type="submit"
+                                  className="font-nunito mx-auto h-[52px] w-full rounded-lg border border-[#366871] bg-[#366871] px-8 py-3.5 text-center text-base font-semibold text-white outline-none transition duration-300 ease-in-out hover:bg-white hover:text-[#366871] md:max-w-[300px] lg:max-w-[376px]"
+                                >
+                                  {!loading ? (
+                                    "Submit"
+                                  ) : (
+                                    <span className="loading loading-spinner"></span>
+                                  )}
+                                </button>
+                                {error && (
+                                  <div className="alert alert-error mt-3 flex h-10">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-6 w-6 stroke-current"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                    <span>{error}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </form>
+
+                            <button
+                              type="submit"
+                              onClick={() => setShowTerms(true)}
+                              className="font-nunito mt-10 text-center text-base font-semibold text-[#2A2A2C] underline transition duration-300 ease-in-out hover:text-[#366871] md:mt-20 lg:mt-[152px]"
+                            >
+                              Terms and Condition
+                            </button>
+                            <TermsAndConditions
+                              showTerms={showTerms}
+                              setShowTerms={setShowTerms}
+                            />
                           </div>
-                        )}
-                      </form>
-                      <p className="font-semilight text-xs text-gray-600">
-                        All awarded points will be redeemable upon successful
-                        credit card application and issuance.
-                      </p>
-                      <a
-                        href="/files/HomeBaseWaitlistTermsOfUse.html"
-                        target="_blank"
-                        className="font-semilight text-xs text-gray-600"
-                      >
-                        Terms and Conditions
-                      </a>
+                        </div>
+                      </div>
+                      <div className="hidden w-full max-w-[50%] flex-col items-end justify-start bg-[#ebf0f1] pb-16 pr-6 pt-[100px] md:flex lg:pb-[110px] lg:pt-[174px]">
+                        <Image
+                          src={modalmainImage}
+                          width={573}
+                          height={545}
+                          alt="main-image"
+                        />
+                      </div>
                     </div>
                   </div>
                 </Dialog.Panel>
@@ -424,6 +472,6 @@ export default function WaitListButton({
         apiSecretKey={apiSecretKey}
         existingUser={existingUser}
       />
-    </div>
+    </>
   );
 }
