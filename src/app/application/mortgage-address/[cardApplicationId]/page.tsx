@@ -36,9 +36,13 @@ export default async function MortgageAddress({
         Is your mortgage for this address?
       </h1>
       <address className="mb-4 not-italic">
-        4308 W. 230th St
+        {cardApplication.currentAddress?.address1}{" "}
+        {cardApplication.currentAddress?.address2 &&
+          `${cardApplication.currentAddress?.address2} `}
         <br />
-        Torrance, CA 90505
+        {cardApplication.currentAddress?.city},{" "}
+        {cardApplication.currentAddress?.state}{" "}
+        {cardApplication.currentAddress?.zipCode}
       </address>
       <MortgageForm
         cardApplicationId={cardApplicationId}
