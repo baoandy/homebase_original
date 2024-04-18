@@ -3,11 +3,11 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
 import { auth } from "@/auth";
 import Link from "next/link";
-import EmploymentDetailsForm from "./EmploymentForm";
 
 import { env } from "@/lib/env";
+import MortgageDetailsForm from "./MortgageDetailsForm";
 
-export default async function EmploymentDetails({
+export default async function MortgageDetails({
   params,
 }: {
   params: { cardApplicationId: string };
@@ -32,8 +32,8 @@ export default async function EmploymentDetails({
 
   return (
     <div className="mx-auto max-w-md p-4">
-      <h1 className="mb-4 text-lg font-semibold">Employment Details</h1>
-      <EmploymentDetailsForm
+      <h1 className="mb-4 text-lg font-semibold">Mortgage Details</h1>
+      <MortgageDetailsForm
         cardApplicationId={cardApplicationId}
         apiSecretKey={env.API_SECRET_KEY}
       />
