@@ -64,6 +64,28 @@ export default function AddressForm({
       setMessage("Error. Please Try Again");
     }
   }
+  useEffect(() => {
+    async function fetchCurrentAddress() {
+      const response = await fetch(
+        `/api/application/fetch-current-address/${cardApplicationId}`,
+        {
+          headers: {
+            secretKey: apiSecretKey,
+          },
+        },
+      );
+      const { status, address } = await response.json();
+      if (status === 200) {
+        setValue("address", address.address1);
+        setValue("unit", address.address2);
+        setValue("city", address.city);
+        setValue("state", address.state);
+        setValue("zipCode", address.zipCode);
+        setDisplayAutoComplete(false);
+      }
+    }
+    fetchCurrentAddress();
+  }, [apiSecretKey, cardApplicationId, setValue]);
 
   return (
     <div className="flex w-full flex-col items-center">
