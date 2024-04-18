@@ -63,7 +63,57 @@ export default function MortgageForm({
     const resData = await response.json();
     if (resData.status === 200) {
       setLoading(false);
-      router.push(`/application/mortgage-address/${cardApplicationId}`);
+      router.push(`/application/employment/${cardApplicationId}`);
+    } else {
+      setLoading(false);
+      setMessage("Error. Please Try Again");
+    }
+  }
+  useEffect(() => {
+    async function fetchApplication() {
+      const response = await fetch(
+        `/api/application/fetch-application/${cardApplicationId}`,
+        {
+          headers: {
+            secretKey: apiSecretKey,
+          },
+        },
+      );
+      const resData = await response.json();
+      if (resData.status === 200) {
+        const { cardApplication } = resData;
+        if (
+          cardApplication.mortgageAddress &&
+          cardApplication.mortgageAddressId !== cardApplication.currentAddressId
+        ) {
+          setSelectedAddress("differentProperty");
+          setValue("address", cardApplication.mortgageAddress.address);
+          setValue("unit", cardApplication.mortgageAddress.unit);
+          setValue("city", cardApplication.mortgageAddress.city);
+          setValue("state", cardApplication.mortgageAddress.state);
+          setValue("zipCode", cardApplication.mortgageAddress.zipCode);
+          setDisplayAutoComplete(false);
+        }
+      }
+    }
+    fetchApplication();
+  }, [apiSecretKey, cardApplicationId, setValue]);
+  async function handleContinue() {
+    setLoading(true);
+    const response = await fetch("/api/application/same-address", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        secretKey: apiSecretKey,
+      },
+      body: JSON.stringify({
+        cardApplicationId,
+      }),
+    });
+    const resData = await response.json();
+    if (resData.status === 200) {
+      setLoading(false);
+      router.push(`/application/employment/${cardApplicationId}`);
     } else {
       setLoading(false);
       setMessage("Error. Please Try Again");
@@ -104,7 +154,7 @@ export default function MortgageForm({
       </fieldset>
       {selectedAddress === "currentAddress" && (
         <button
-          type="submit"
+          onClick={handleContinue}
           className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         >
           Continue
