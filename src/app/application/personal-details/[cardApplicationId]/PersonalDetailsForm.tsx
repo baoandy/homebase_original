@@ -9,7 +9,7 @@ interface PersonalDetailsFormData {
   cardApplicationId: string;
   firstName: string;
   lastName: string;
-  dateOfBirth: string;
+  dateOfBirth: Date | undefined;
   phoneNumber: string;
 }
 
@@ -47,6 +47,31 @@ export default function PersonalDetailsForm({
     }
     setLoading(false);
   }
+  useEffect(() => {
+    async function fetchPersonalDetails() {
+      console.log("Fetching personal details");
+      const response = await fetch(
+        `/api/application/fetch-personal-details/${cardApplicationId}`,
+        {
+          headers: {
+            secretKey: apiSecretKey,
+          },
+        },
+      );
+      const { status, user } = await response.json();
+      console.log(user);
+      if (status === 200) {
+        setValue("firstName", user.firstName);
+        setValue("lastName", user.lastName);
+        setValue(
+          "dateOfBirth",
+          user.dateOfBirth ? new Date(user.dateOfBirth) : undefined,
+        );
+        setValue("phoneNumber", user.phoneNumber);
+      }
+    }
+    fetchPersonalDetails();
+  }, [apiSecretKey, cardApplicationId, setValue]);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-5">
@@ -175,15 +200,16 @@ export default function PersonalDetailsForm({
                 Birthday
               </label>
               <DatePicker
-                {...field}
-                selected={field.value ? new Date(field.value) : null}
-                onChange={(date) => field.onChange(date)}
+                selected={field.value}
+                onChange={(date) => {
+                  field.onChange(date);
+                }}
                 className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none focus:ring-primary sm:text-sm ${
                   error
                     ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                     : "border-gray-300 focus:border-primary focus:ring-primary"
                 }`}
-                dateFormat="MMMM d, yyyy"
+                dateFormat="yyyy-MM-dd"
                 peekNextMonth
                 showMonthDropdown
                 showYearDropdown
@@ -209,4 +235,11 @@ export default function PersonalDetailsForm({
       </button>
     </form>
   );
+}
+
+function formatDate(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
