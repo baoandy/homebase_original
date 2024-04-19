@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { set } from "date-fns";
 
 interface EmploymentFormData {
   cardApplicationId: string;
@@ -27,6 +28,7 @@ export default function EmploymentDetailsForm({
     useForm<EmploymentFormData>({
       defaultValues: {
         cardApplicationId,
+        employmentStatus: "",
         companyName: "",
         jobTitle: "",
       },
@@ -49,17 +51,13 @@ export default function EmploymentDetailsForm({
     }
     setLoading(false);
   }
-  const employmentStatus = watch("employmentStatus");
-
-  useEffect(() => {
-    const shouldShowExtraFields = [
-      "Full Time Employee",
-      "Part Time Employee",
-      "Self Employed",
-      "Independent Contractor",
-    ].includes(employmentStatus);
-    setExtraFields(shouldShowExtraFields);
-  }, [employmentStatus]);
+  const shouldShowExtraFields = [
+    "Full Time Employee",
+    "Part Time Employee",
+    "Self Employed",
+    "Independent Contractor",
+  ];
+  const hideExtraFields = ["Retired", "Unemployed", "Other"];
   useEffect(() => {
     async function fetchApplication() {
       const response = await fetch(
@@ -81,7 +79,7 @@ export default function EmploymentDetailsForm({
             "Part Time Employee",
             "Self Employed",
             "Independent Contractor",
-          ].includes(employmentStatus)
+          ].includes(cardApplication.employmentStatus)
         ) {
           setValue("companyName", cardApplication.companyName);
           setValue("jobTitle", cardApplication.jobTitle);
@@ -90,7 +88,7 @@ export default function EmploymentDetailsForm({
       }
     }
     fetchApplication();
-  }, [apiSecretKey, cardApplicationId, setValue, employmentStatus]);
+  }, [apiSecretKey, cardApplicationId, setValue]);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-4">
@@ -110,6 +108,13 @@ export default function EmploymentDetailsForm({
                 }`}
                 onChange={(e) => {
                   field.onChange(e);
+                  if (shouldShowExtraFields.includes(e.target.value)) {
+                    setExtraFields(true);
+                  } else if (hideExtraFields.includes(e.target.value)) {
+                    setExtraFields(false);
+                    setValue("companyName", "");
+                    setValue("jobTitle", "");
+                  }
                 }}
               >
                 <option value="" disabled>

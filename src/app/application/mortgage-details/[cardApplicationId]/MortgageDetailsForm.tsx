@@ -9,7 +9,7 @@ interface MortgageDetailsFormData {
   yearMortgageOriginated: number;
 }
 
-interface EmploymentDetailsFormProps {
+interface MortgageDetailsFormProps {
   cardApplicationId: string;
   apiSecretKey: string;
 }
@@ -17,7 +17,7 @@ interface EmploymentDetailsFormProps {
 export default function MortgageDetailsForm({
   cardApplicationId,
   apiSecretKey,
-}: EmploymentDetailsFormProps) {
+}: MortgageDetailsFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [extraFields, setExtraFields] = useState(false);
@@ -39,7 +39,7 @@ export default function MortgageDetailsForm({
     });
     const { status, message } = await response.json();
     if (status === 200) {
-      router.push(`/application/secure/${cardApplicationId}`);
+      router.push(`/application/submit/${cardApplicationId}`);
     } else {
       alert(message);
     }
