@@ -49,7 +49,7 @@ export default function MortgageForm({
   });
   async function onSubmit(data: AddressFormData) {
     setLoading(true);
-    const response = await fetch("/api/application/current-address", {
+    const response = await fetch("/api/application/mortgage-address", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -87,8 +87,8 @@ export default function MortgageForm({
           cardApplication.mortgageAddressId !== cardApplication.currentAddressId
         ) {
           setSelectedAddress("differentProperty");
-          setValue("address", cardApplication.mortgageAddress.address);
-          setValue("unit", cardApplication.mortgageAddress.unit);
+          setValue("address", cardApplication.mortgageAddress.address1);
+          setValue("unit", cardApplication.mortgageAddress.address2);
           setValue("city", cardApplication.mortgageAddress.city);
           setValue("state", cardApplication.mortgageAddress.state);
           setValue("zipCode", cardApplication.mortgageAddress.zipCode);
