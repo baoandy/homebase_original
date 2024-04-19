@@ -32,6 +32,7 @@
     "react-google-autocomplete": "^2.7.3",
     "react-hook-form": "^7.51.2",
     "react-slick": "^0.30.2",
+    "sharp": "^0.33.3",
     "slick-carousel": "^1.8.1",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"

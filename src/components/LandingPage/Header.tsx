@@ -144,14 +144,14 @@ export default function Header({}: HeaderProps) {
         </Link>
       </div> */}
 
-      <div className="md:hidden">
+      {/* <div className="md:hidden">
         <button
           className="text-gray-600 focus:outline-none"
           onClick={toggleMenu}
         >
           <FontAwesomeIcon icon={isOpen ? faTimes : faBars} size="2x" />
         </button>
-      </div>
+      </div> */}
 
       {isOpen && (
         <div className="absolute left-0 right-0 top-full bg-white p-4 md:hidden">
