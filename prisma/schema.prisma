@@ -36,55 +36,55 @@ model Waitlist {
 }
 
 model User {
+  id            String        @id @default(uuid()) @db.Uuid
+  name          String?
+  email         String        @unique
+  emailVerified Boolean?      @default(false)
+  password      String?
+  first_name    String?
+  last_name     String?
+  date_of_birth String // Stores date in 'YYYY-MM-DD' format string, TP
+  phone_number  String?
+  address       userAddress[]
 
-  id                String   @id @default(uuid()) @db.Uuid
-  name              String?
-  email             String   @unique
-  emailVerified     Boolean? @default(false)
-  password          String?
-  first_name        String?
-  last_name         String?
-  date_of_birth     String  // Stores date in 'YYYY-MM-DD' format string, TP
-  phone_number      String?
-  address           userAddress[]
-  
-  citizenship       citizen   @default(US)
-  tin               String?
+  citizenship citizen @default(US)
+  tin         String?
 
-
-  account           account[]   
-
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  application_id    String? @unique
-
-  addresses Address[]
-
-  @@map("user")
-}
-
-model Account {
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
+  account account[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  application_id String? @unique
 
-  @@id([provider, providerAccountId])
-  @@map("account")
+  addresses       Address[]
+  Session         Session[]
+  CardApplication CardApplication?
+
+  @@map("user")
 }
+
+// model Account {
+//   userId            String
+//   type              String
+//   provider          String
+//   providerAccountId String
+//   refresh_token     String?
+//   access_token      String?
+//   expires_at        Int?
+//   token_type        String?
+//   scope             String?
+//   id_token          String?
+//   session_state     String?
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   @@id([provider, providerAccountId])
+//   @@map("account")
+// }
 
 model Session {
   sessionToken String   @unique
@@ -153,49 +153,50 @@ model Address {
 }
 
 model userAddress {
-  id            String     @id @default(uuid()) @db.Uuid
-  userId        String     @db.Uuid
-  address_type  addr_type  @default(Physical)
+  id            String    @id @default(uuid()) @db.Uuid
+  userId        String    @db.Uuid
+  address_type  addr_type @default(Physical)
   street_line_1 String
   street_line_2 String?
   city          String
   state         String
   postal_code   String
   country       String
-  user          User     @relation(fields: [userId], references: [id])
+  user          User      @relation(fields: [userId], references: [id])
+
   @@unique([userId, address_type])
 }
 
 model accountProduct {
-  id          String @unique
+  id          String    @unique
   description String?
   account     account[]
 }
+
 model account {
-id                            String @id @unique
-userId                        String @db.Uuid
-account_product_id            String
-primary_person_application_id String
-status                        String
-ownership_type                String
-person_applications           Json
+  id                            String @id @unique
+  userId                        String @db.Uuid
+  account_product_id            String
+  primary_person_application_id String
+  status                        String
+  ownership_type                String
+  person_applications           Json
 
-business_application_id       String?
-account_id                    String?
-product                       String?
-account_number                String?
-deposit_id                    String?
-account_number_reservation_id String?
+  business_application_id       String?
+  account_id                    String?
+  product                       String?
+  account_number                String?
+  deposit_id                    String?
+  account_number_reservation_id String?
 
-created_at                    DateTime
-updated_at                    DateTime
+  created_at DateTime
+  updated_at DateTime
 
-bankdata                      Json?
-userdata                      Json?
-accountProduct                accountProduct @relation(fields: [account_product_id], references: [id])
-user                          User @relation(fields: [userId], references: [id])
+  bankdata       Json?
+  userdata       Json?
+  accountProduct accountProduct @relation(fields: [account_product_id], references: [id])
+  user           User           @relation(fields: [userId], references: [id])
 }
-
 
 enum citizen {
   US
@@ -205,4 +206,3 @@ enum addr_type {
   Physical
   Mailing
 }
-
