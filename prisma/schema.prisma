@@ -112,7 +112,7 @@ model VerificationToken {
 
 model CardApplication {
   id                     String   @id @default(cuid())
-  userId                 String   @unique
+  userId                 String   @unique @db.Uuid
   user                   User     @relation(fields: [userId], references: [id])
   status                 String
   currentAddressId       String?  @db.Uuid
@@ -135,7 +135,7 @@ model CardApplication {
 
 model Address {
   id        String   @id @default(uuid()) @map("_id") @db.Uuid
-  userId    String
+  userId    String   @db.Uuid
   address1  String
   address2  String
   city      String
