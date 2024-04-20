@@ -4,7 +4,20 @@ import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Image from "next/image";
+import barFill from "@/app/assets/Onboarding/barFill.png";
+import barNoFill from "@/app/assets/Onboarding/barNoFill.png";
 
+const styles = {
+  bar: {
+    width: "50px", // Default width for non-mobile devices
+    height: "3px",
+  },
+  barMobile: {
+    width: "15px", // Width for mobile devices
+    height: "3px",
+  },
+};
 interface PersonalDetailsFormData {
   cardApplicationId: string;
   firstName: string;
@@ -218,16 +231,55 @@ export default function PersonalDetailsForm({
           )}
         />
       </div>
-      <button
-        type="submit"
-        className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
-      >
-        {loading ? (
-          <span className="loading loading-spinner loading-sm"></span>
-        ) : (
-          "Submit"
-        )}
-      </button>
+      <div className="mt-32 flex w-full gap-5 max-md:mt-10 max-md:max-w-full max-md:flex-wrap">
+        <div className="mt-2 flex w-fit shrink-0 grow basis-0 flex-col self-start">
+          <div className="text-lg font-medium leading-7 text-black">1/6</div>
+          <div className="mt-2.5 flex gap-2 p-1.5">
+            <Image
+              src={barFill}
+              alt="Progress bar"
+              style={window.innerWidth < 640 ? styles.barMobile : styles.bar}
+            />
+            <Image
+              src={barNoFill}
+              alt="Progress bar"
+              style={window.innerWidth < 640 ? styles.barMobile : styles.bar}
+            />
+            <Image
+              src={barNoFill}
+              alt="Progress bar"
+              style={window.innerWidth < 640 ? styles.barMobile : styles.bar}
+            />
+            <Image
+              src={barNoFill}
+              alt="Progress bar"
+              style={window.innerWidth < 640 ? styles.barMobile : styles.bar}
+            />
+            <Image
+              src={barNoFill}
+              alt="Progress bar"
+              style={window.innerWidth < 640 ? styles.barMobile : styles.bar}
+            />
+            <Image
+              src={barNoFill}
+              alt="Progress bar"
+              style={window.innerWidth < 640 ? styles.barMobile : styles.bar}
+            />
+          </div>
+        </div>
+        <div className="flex justify-between gap-5 whitespace-nowrap text-base font-semibold leading-6">
+          <button
+            type="submit"
+            className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+          >
+            {loading ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              "Submit"
+            )}
+          </button>
+        </div>
+      </div>
     </form>
   );
 }

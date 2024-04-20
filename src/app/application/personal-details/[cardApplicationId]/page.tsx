@@ -5,6 +5,8 @@ import { auth } from "@/auth";
 import Link from "next/link";
 import PersonalDetailsForm from "./PersonalDetailsForm";
 import { env } from "@/lib/env";
+import Image from "next/image";
+import homeCleaners from "@/app/assets/Onboarding/homeCleaners.png";
 
 export default async function PersonalDetails({
   params,
@@ -26,12 +28,30 @@ export default async function PersonalDetails({
     redirect("/application");
   }
   return (
-    <div>
-      <h1 className="my-4 text-3xl font-semibold">About You</h1>
-      <PersonalDetailsForm
-        cardApplicationId={cardApplicationId}
-        apiSecretKey={env.API_SECRET_KEY}
-      />
-    </div>
+    <main className="mt-20 w-full max-w-[1360px] self-center max-md:mt-10 max-md:max-w-full">
+      <div className="flex gap-5 max-md:flex-col max-md:gap-0">
+        <div className="flex w-[58%] flex-col max-md:ml-0 max-md:w-full">
+          <Image
+            src={homeCleaners}
+            alt="Decorative image"
+            className="aspect-square w-full max-md:mt-10 max-md:max-w-full"
+          />
+        </div>
+        <div className="ml-5 flex w-[42%] flex-col max-md:ml-0 max-md:w-full">
+          <section className="mt-44 flex grow flex-col px-5 max-md:mt-10 max-md:max-w-full">
+            <h1 className="text-5xl font-bold capitalize leading-[62.4px] text-zinc-800 max-md:max-w-full max-md:text-4xl">
+              <span className="text-slate-600">Account</span> Details
+            </h1>
+            <p className="mt-5 text-base leading-6 text-zinc-800 max-md:max-w-full">
+              Tell us a bit about yourself to get started
+            </p>
+            <PersonalDetailsForm
+              cardApplicationId={cardApplicationId}
+              apiSecretKey={env.API_SECRET_KEY}
+            />
+          </section>
+        </div>
+      </div>
+    </main>
   );
 }
