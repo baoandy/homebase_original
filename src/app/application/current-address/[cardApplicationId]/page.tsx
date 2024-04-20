@@ -38,7 +38,7 @@ export default async function CurrentAddress({
             className="aspect-square w-full max-md:mt-10 max-md:max-w-full"
           />
         </div>
-        <div className="ml-5 flex w-[42%] flex-col max-md:ml-0 max-md:w-full">
+        <div className="ml-5 mt-24 flex w-[42%] flex-col max-md:ml-0 max-md:w-full">
           <section className=" flex grow flex-col px-5 max-md:mt-10 max-md:max-w-full">
             <CurrentAddressForm
               cardApplicationId={cardApplicationId}

@@ -38,13 +38,7 @@ export default async function PersonalDetails({
           />
         </div>
         <div className="ml-5 flex w-[42%] flex-col max-md:ml-0 max-md:w-full">
-          <section className="mt-44 flex grow flex-col px-5 max-md:mt-10 max-md:max-w-full">
-            <h1 className="text-5xl font-bold capitalize leading-[62.4px] text-zinc-800 max-md:max-w-full max-md:text-4xl">
-              <span className="text-slate-600">Account</span> Details
-            </h1>
-            <p className="mt-5 text-base leading-6 text-zinc-800 max-md:max-w-full">
-              Tell us a bit about yourself to get started
-            </p>
+          <section className="mt-24 flex grow flex-col px-5 max-md:mt-10 max-md:max-w-full">
             <PersonalDetailsForm
               cardApplicationId={cardApplicationId}
               apiSecretKey={env.API_SECRET_KEY}
