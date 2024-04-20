@@ -39,11 +39,11 @@ model User {
   id            String        @id @default(uuid()) @db.Uuid
   name          String?
   email         String        @unique
-  emailVerified Boolean?      @default(false)
+  emailVerified DateTime
   password      String?
   first_name    String?
   last_name     String?
-  date_of_birth String // Stores date in 'YYYY-MM-DD' format string, TP
+  date_of_birth String?
   phone_number  String?
   address       userAddress[]
 
