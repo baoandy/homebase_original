@@ -3,6 +3,20 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Autocomplete from "react-google-autocomplete";
 import { useForm, Controller, set } from "react-hook-form";
+import Image from "next/image";
+import barFill from "@/app/assets/Onboarding/barFill.png";
+import barNoFill from "@/app/assets/Onboarding/barNoFill.png";
+
+const styles = {
+  bar: {
+    width: "50px", // Default width for non-mobile devices
+    height: "3px",
+  },
+  barMobile: {
+    width: "15px", // Width for mobile devices
+    height: "3px",
+  },
+};
 
 interface AddressFormProps {
   apiSecretKey: string;
@@ -89,6 +103,12 @@ export default function AddressForm({
 
   return (
     <div className="flex w-full flex-col items-center">
+      <h1 className="text-5xl font-bold capitalize leading-[62.4px] text-zinc-800 max-md:max-w-full max-md:text-4xl">
+        <span className="text-slate-600">Current</span> Address
+      </h1>
+      <p className="my-4 text-base leading-6 text-zinc-800 max-md:max-w-full">
+        Where do you currently live?
+      </p>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col  gap-4">
         {displayAutoComplete && (
           <Autocomplete
@@ -164,7 +184,7 @@ export default function AddressForm({
                   <input
                     {...field}
                     type="text"
-                    className="input input-bordered w-full max-w-xs"
+                    className="input input-bordered w-full"
                     placeholder="Address"
                     value={field.value}
                     onChange={(e) => {
@@ -183,7 +203,7 @@ export default function AddressForm({
                   <input
                     {...field}
                     type="text"
-                    className="input input-bordered w-full max-w-xs"
+                    className="input input-bordered w-full"
                     placeholder="Unit"
                     value={field.value}
                     onChange={(e) => {
@@ -205,7 +225,7 @@ export default function AddressForm({
                   <input
                     {...field}
                     type="text"
-                    className="input input-bordered w-full max-w-xs"
+                    className="input input-bordered w-full"
                     placeholder="City"
                     value={field.value}
                     onChange={(e) => {
@@ -227,7 +247,7 @@ export default function AddressForm({
                   <input
                     {...field}
                     type="text"
-                    className="input input-bordered w-full max-w-xs"
+                    className="input input-bordered w-full"
                     placeholder="State"
                     value={field.value}
                     onChange={(e) => {
@@ -237,7 +257,7 @@ export default function AddressForm({
                 )}
               />
             </div>
-            <div className="mb-5">
+            <div className="mb-0">
               <Controller
                 name="zipCode"
                 control={control}
@@ -249,7 +269,7 @@ export default function AddressForm({
                   <input
                     {...field}
                     type="text"
-                    className="input input-bordered w-full max-w-xs"
+                    className="input input-bordered w-full"
                     placeholder="Zip Code"
                     value={field.value}
                     onChange={(e) => {
@@ -259,34 +279,82 @@ export default function AddressForm({
                 )}
               />
             </div>
-
-            <div className="flex flex-row gap-2 self-center">
-              <button className="btn btn-outline btn-primary" type="submit">
-                Continue
-              </button>
-              <button
-                className="btn btn-outline btn-primary"
-                onClick={() => {
-                  setDisplayAutoComplete(true);
-                  setValue("address", "");
-                  setValue("unit", "");
-                  setValue("city", "");
-                  setValue("state", "");
-                  setValue("zipCode", "");
-                }}
-              >
-                Reset
-              </button>
-            </div>
-            {message && (
-              <div
-                className={`alert ${
-                  message.includes("Success") ? "alert-success" : "alert-error"
-                }`}
-              >
-                {message}
+            <div className="mt-12 flex w-full flex-col gap-5 max-md:mt-10 max-md:max-w-full max-md:flex-wrap">
+              <div className="flex flex-col justify-between gap-5 whitespace-nowrap text-base font-semibold leading-6">
+                <button
+                  type="submit"
+                  className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+                >
+                  {loading ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
+                <button
+                  className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+                  onClick={() => {
+                    setDisplayAutoComplete(true);
+                    setValue("address", "");
+                    setValue("unit", "");
+                    setValue("city", "");
+                    setValue("state", "");
+                    setValue("zipCode", "");
+                  }}
+                >
+                  Reset
+                </button>
               </div>
-            )}
+              <div className="mt-2 flex w-fit shrink-0 grow basis-0 flex-col self-start">
+                <div className="text-lg font-medium leading-7 text-black">
+                  2/6
+                </div>
+                <div className="mt-2.5 flex gap-2 p-1.5">
+                  <Image
+                    src={barFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                  <Image
+                    src={barFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                  <Image
+                    src={barNoFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                  <Image
+                    src={barNoFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                  <Image
+                    src={barNoFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                  <Image
+                    src={barNoFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                </div>
+              </div>
+            </div>
           </>
         )}
       </form>
