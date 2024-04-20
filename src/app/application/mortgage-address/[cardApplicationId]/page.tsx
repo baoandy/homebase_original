@@ -33,25 +33,6 @@ export default async function MortgageAddress({
   }
 
   return (
-    // <div className="mx-auto max-w-md p-4">
-    //   <h1 className="mb-4 text-lg font-semibold">
-    //     Is your mortgage for this address?
-    //   </h1>
-    //   <address className="mb-4 not-italic">
-    //     {cardApplication.currentAddress?.address1}{" "}
-    //     {cardApplication.currentAddress?.address2 &&
-    //       `${cardApplication.currentAddress?.address2} `}
-    //     <br />
-    //     {cardApplication.currentAddress?.city},{" "}
-    //     {cardApplication.currentAddress?.state}{" "}
-    //     {cardApplication.currentAddress?.zipCode}
-    //   </address>
-    //   <MortgageForm
-    //     cardApplicationId={cardApplicationId}
-    //     googleApiKey={env.GOOGLE_PLACES_API_KEY}
-    //     apiSecretKey={env.API_SECRET_KEY}
-    //   />
-    // </div>
     <main className="mt-20 w-full max-w-[1360px] self-center max-md:mt-10 max-md:max-w-full">
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
         <div className="flex w-[58%] flex-col max-md:ml-0 max-md:w-full">
