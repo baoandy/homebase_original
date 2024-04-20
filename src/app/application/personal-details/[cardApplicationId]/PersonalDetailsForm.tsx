@@ -9,7 +9,7 @@ interface PersonalDetailsFormData {
   cardApplicationId: string;
   firstName: string;
   lastName: string;
-  dateOfBirth: Date | undefined;
+  dateOfBirth: string;
   phoneNumber: string;
 }
 
@@ -61,13 +61,10 @@ export default function PersonalDetailsForm({
       const { status, user } = await response.json();
       console.log(user);
       if (status === 200) {
-        setValue("firstName", user.firstName);
-        setValue("lastName", user.lastName);
-        setValue(
-          "dateOfBirth",
-          user.dateOfBirth ? new Date(user.dateOfBirth) : undefined,
-        );
-        setValue("phoneNumber", user.phoneNumber);
+        setValue("firstName", user.first_name);
+        setValue("lastName", user.last_name);
+        setValue("dateOfBirth", user.date_of_birth);
+        setValue("phoneNumber", user.phone_number);
       }
     }
     fetchPersonalDetails();
@@ -199,22 +196,20 @@ export default function PersonalDetailsForm({
               >
                 Birthday
               </label>
-              <DatePicker
-                selected={field.value}
-                onChange={(date) => {
-                  field.onChange(date);
-                }}
+              <input
+                {...field}
+                type="date"
+                id="dateOfBirth"
                 className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none focus:ring-primary sm:text-sm ${
                   error
                     ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                     : "border-gray-300 focus:border-primary focus:ring-primary"
                 }`}
-                dateFormat="yyyy-MM-dd"
-                peekNextMonth
-                showMonthDropdown
-                showYearDropdown
-                dropdownMode="select"
-                placeholderText="Date of Birth"
+                placeholder="YYYY-MM-DD"
+                pattern="\d{4}-\d{2}-\d{2}"
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
               />
               {error && (
                 <p className="mt-1 text-sm text-red-500">{error.message}</p>

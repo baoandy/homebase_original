@@ -28,10 +28,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     await prisma.user.update({
       where: { id: user.id },
       data: {
-        firstName,
-        lastName,
-        phoneNumber,
-        dateOfBirth,
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: phoneNumber,
+        date_of_birth: dateOfBirth,
       },
     });
     return NextResponse.json({ status: 200, message: "Success" });
