@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
 import { auth } from "@/auth";
 import Link from "next/link";
+import { onboardingRedirect } from "@/lib/helper/onboardingRedirect";
 
 export default async function ApplicationRedirectPage({
   params,
@@ -12,10 +13,14 @@ export default async function ApplicationRedirectPage({
   const cardApplicationId = params.cardApplicationId;
   const cardApplication = await prisma.cardApplication.findUnique({
     where: { id: cardApplicationId },
+    include: {
+      user: true,
+    },
   });
   if (!cardApplication) {
     redirect("/application");
   }
+
   const user = await prisma.user.findUnique({
     where: { id: cardApplication.userId },
   });
@@ -23,6 +28,8 @@ export default async function ApplicationRedirectPage({
   if (!session || !user || session.user?.email !== user.email) {
     redirect("/application");
   }
+  onboardingRedirect(cardApplication);
+
   return (
     <div className="flex flex-col items-center justify-center  p-4">
       <header className="mb-12 text-center">
