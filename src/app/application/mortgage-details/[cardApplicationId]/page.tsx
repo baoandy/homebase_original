@@ -8,6 +8,7 @@ import { env } from "@/lib/env";
 import MortgageDetailsForm from "./MortgageDetailsForm";
 import Image from "next/image";
 import homeCleaners from "@/app/assets/Onboarding/homeCleaners.png";
+import { onboardingRedirect } from "@/lib/helper/onboardingRedirect";
 
 export default async function MortgageDetails({
   params,
@@ -19,6 +20,7 @@ export default async function MortgageDetails({
     where: { id: cardApplicationId },
     include: {
       currentAddress: true,
+      user: true,
     },
   });
   if (!cardApplication) {
@@ -31,6 +33,7 @@ export default async function MortgageDetails({
   if (!session || !user || session.user?.email !== user.email) {
     redirect("/application");
   }
+  onboardingRedirect(cardApplication);
 
   return (
     // <div className="mx-auto max-w-md p-4">

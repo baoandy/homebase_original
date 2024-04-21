@@ -6,6 +6,7 @@ import Link from "next/link";
 import EmploymentDetailsForm from "./EmploymentForm";
 import Image from "next/image";
 import homeCleaners from "@/app/assets/Onboarding/homeCleaners.png";
+import { onboardingRedirect } from "@/lib/helper/onboardingRedirect";
 
 import { env } from "@/lib/env";
 
@@ -19,6 +20,7 @@ export default async function EmploymentDetails({
     where: { id: cardApplicationId },
     include: {
       currentAddress: true,
+      user: true,
     },
   });
   if (!cardApplication) {
@@ -31,6 +33,7 @@ export default async function EmploymentDetails({
   if (!session || !user || session.user?.email !== user.email) {
     redirect("/application");
   }
+  onboardingRedirect(cardApplication);
 
   return (
     // <div className="mx-auto max-w-md p-4">

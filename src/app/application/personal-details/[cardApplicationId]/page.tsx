@@ -7,6 +7,7 @@ import PersonalDetailsForm from "./PersonalDetailsForm";
 import { env } from "@/lib/env";
 import Image from "next/image";
 import homeCleaners from "@/app/assets/Onboarding/homeCleaners.png";
+import { onboardingRedirect } from "@/lib/helper/onboardingRedirect";
 
 export default async function PersonalDetails({
   params,
@@ -16,6 +17,9 @@ export default async function PersonalDetails({
   const cardApplicationId = params.cardApplicationId;
   const cardApplication = await prisma.cardApplication.findUnique({
     where: { id: cardApplicationId },
+    include: {
+      user: true,
+    },
   });
   if (!cardApplication) {
     redirect("/application");
@@ -27,6 +31,7 @@ export default async function PersonalDetails({
   if (!session || !user || session.user?.email !== user.email) {
     redirect("/application");
   }
+  onboardingRedirect(cardApplication);
   return (
     <main className="mt-20 w-full max-w-[1360px] self-center max-md:mt-10 max-md:max-w-full">
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
