@@ -10,21 +10,31 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { signOut } from "next-auth/react";
+import SignOut from "@/actions/signOut";
+import { sign } from "crypto";
 
-interface HeaderProps {}
+interface HeaderProps {
+  loggedInUser: boolean;
+  firstName: string;
+  lastName: string;
+  signOut: () => Promise<void>;
+}
 
 interface ProfileButtonProps {
   firstName: string | null | undefined;
   lastName: string | null | undefined;
+  signOut: () => Promise<void>;
 }
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-function ProfileButton({ firstName, lastName }: ProfileButtonProps) {
+function ProfileButton({ firstName, lastName, signOut }: ProfileButtonProps) {
   const router = useRouter();
+  async function handleSignOut() {
+    await signOut();
+  }
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -71,10 +81,7 @@ function ProfileButton({ firstName, lastName }: ProfileButtonProps) {
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full px-4 py-2 text-left text-sm",
                     )}
-                    onClick={() => {
-                      signOut({ redirect: false });
-                      router.push("/service");
-                    }}
+                    onClick={handleSignOut}
                   >
                     Sign out
                   </button>
@@ -88,7 +95,12 @@ function ProfileButton({ firstName, lastName }: ProfileButtonProps) {
   );
 }
 
-export default function Header({}: HeaderProps) {
+export default function Header({
+  loggedInUser,
+  firstName,
+  lastName,
+  signOut,
+}: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const currentPath = usePathname();
 
@@ -104,45 +116,33 @@ export default function Header({}: HeaderProps) {
         </Link>
       </div>
 
-      {/* {loggedInUser && (
-        <div className="hidden md:flex gap-4 font-semibold whitespace-nowrap">
-          <div className="relative flex justify-center items-center">
+      {loggedInUser && (
+        <div className="hidden gap-4 whitespace-nowrap font-semibold md:flex">
+          <div className="relative flex items-center justify-center">
             <ProfileButton
-              firstName={userProfile?.firstName}
-              lastName={userProfile?.lastName}
+              firstName={firstName}
+              lastName={lastName}
+              signOut={signOut}
             />
           </div>
-
-          {isServiceUser && (
-            <Link href="/service/dashboard" onClick={toggleMenu}>
-              <button className="grow justify-center px-8 py-3.5 text-center rounded-lg border border-solid border-[color:var(--Primary-color,#366871)] text-[#366871] bg-white btn-outline hover:bg-[#366871]">
-                Service Dashboard
-              </button>
-            </Link>
-          )}
-          {isProfessional && (
-            <Link href="/service/dashboard/professional" onClick={toggleMenu}>
-              <button className="grow justify-center px-8 py-3.5 text-center rounded-lg border border-solid border-[color:var(--Primary-color,#366871)] text-[#366871] bg-white btn-outline hover:bg-[#366871]">
-                Professional Dashboard
-              </button>
-            </Link>
-          )}
         </div>
-      )} */}
+      )}
 
-      {/* <div className="hidden gap-4 whitespace-nowrap font-semibold md:flex">
-        <Link href="/register/service-user">
-          <button className="btn-outline grow justify-center rounded-lg border border-solid border-[color:var(--Primary-color,#366871)] bg-white px-8 py-3.5 text-center text-[#366871] hover:bg-[#366871]">
-            SignUp
-          </button>
-        </Link>
+      {!loggedInUser && (
+        <div className="hidden gap-4 whitespace-nowrap font-semibold md:flex">
+          <Link href="/application">
+            <button className="btn-outline grow justify-center rounded-lg border border-solid border-[color:var(--Primary-color,#366871)] bg-white px-8 py-3.5 text-center text-[#366871] hover:bg-[#366871]">
+              Apply
+            </button>
+          </Link>
 
-        <Link href="/login">
-          <button className="grow justify-center rounded-lg border border-transparent bg-[#366871] px-8 py-3.5 text-center text-stone-50 hover:border hover:border-solid hover:border-[color:var(--Primary-color,#366871)] hover:bg-white hover:text-[#366871]">
-            Login
-          </button>
-        </Link>
-      </div> */}
+          <Link href="/login">
+            <button className="grow justify-center rounded-lg border border-transparent bg-[#366871] px-8 py-3.5 text-center text-stone-50 hover:border hover:border-solid hover:border-[color:var(--Primary-color,#366871)] hover:bg-white hover:text-[#366871]">
+              Login
+            </button>
+          </Link>
+        </div>
+      )}
 
       {/* <div className="md:hidden">
         <button

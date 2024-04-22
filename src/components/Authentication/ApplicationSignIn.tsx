@@ -1,8 +1,9 @@
 "use client";
+import { signIn } from "@/auth";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Mail } from "lucide-react";
-import { SignIn as signIn } from "@/actions/signin";
+import { applicationSignin } from "@/actions/signin";
 
 interface SignInFormData {
   email: string;
@@ -19,7 +20,7 @@ export function SignIn() {
       //       redirectTo: "/application",
       //     });
       //   }}
-      action={signIn}
+      action={applicationSignin}
     >
       <div className="mb-4 flex justify-center">
         <Mail className="h-6 w-6 text-primary" />
