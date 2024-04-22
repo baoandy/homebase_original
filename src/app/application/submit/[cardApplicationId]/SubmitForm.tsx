@@ -67,14 +67,25 @@ export default function MortgageDetailsForm({
   return (
     <>
       {submittedApplication && (
-        <h1 className="mb-4 text-lg font-semibold">
-          Application Submitted Successfully!
-        </h1>
+        <div className="flex w-full flex-col items-center">
+          <h1 className="text-5xl font-bold capitalize leading-[62.4px] text-zinc-800 max-md:max-w-full max-md:text-4xl">
+            <span className="text-slate-600">Application</span> Submitted
+          </h1>
+          <p className="my-5 text-base leading-6 text-zinc-800 max-md:max-w-full">
+            Thanks for submitting your application. We will review your
+            application and get back to you soon.
+          </p>
+        </div>
       )}
       {!submittedApplication && (
-        <>
-          <h1 className="mb-4 text-lg font-semibold">One More Step!</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex w-full flex-col items-center">
+          <h1 className="text-5xl font-bold capitalize leading-[62.4px] text-zinc-800 max-md:max-w-full max-md:text-4xl">
+            <span className="text-slate-600">Submit</span> Application
+          </h1>
+          <p className="my-5 text-base leading-6 text-zinc-800 max-md:max-w-full">
+            Please enter your Social Security ID to submit your application.
+          </p>
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div className="mb-5">
               <Controller
                 name="ssId"
@@ -136,7 +147,7 @@ export default function MortgageDetailsForm({
               )}
             </button>
           </form>
-        </>
+        </div>
       )}
     </>
   );

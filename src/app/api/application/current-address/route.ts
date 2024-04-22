@@ -8,8 +8,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
     if (secretKey !== env.API_SECRET_KEY) {
       return NextResponse.json({ status: 403, message: "Unauthorized" });
     }
-    const { cardApplicationId, address, unit, city, state, zipCode } =
-      await req.json();
+    const {
+      cardApplicationId,
+      address,
+      unit,
+      city,
+      state,
+      zipCode,
+      monthlyMortgage,
+    } = await req.json();
     const cardApplication = await prisma.cardApplication.findUnique({
       where: { id: cardApplicationId },
     });
@@ -34,10 +41,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
       where: { id: cardApplicationId },
       data: {
         currentAddressId: currentAddress.id,
+        mortgageAmount: Number(monthlyMortgage),
       },
     });
     return NextResponse.json({ status: 200, message: "Success" });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ status: 500, message: "An error occurred" });
   }
 }

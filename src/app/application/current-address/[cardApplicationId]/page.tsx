@@ -32,7 +32,9 @@ export default async function CurrentAddress({
   if (!session || !user || session.user?.email !== user.email) {
     redirect("/application");
   }
-  onboardingRedirect(cardApplication);
+  if (cardApplication.status !== "CREATED") {
+    redirect(`/application/submit/${cardApplicationId}`);
+  }
   return (
     <main className="mt-20 w-full max-w-[1360px] self-center max-md:mt-10 max-md:max-w-full">
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">

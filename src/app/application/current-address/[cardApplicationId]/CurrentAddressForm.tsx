@@ -9,11 +9,11 @@ import barNoFill from "@/app/assets/Onboarding/barNoFill.png";
 
 const styles = {
   bar: {
-    width: "50px", // Default width for non-mobile devices
+    width: "75px", // Default width for non-mobile devices
     height: "3px",
   },
   barMobile: {
-    width: "15px", // Width for mobile devices
+    width: "22px", // Width for mobile devices
     height: "3px",
   },
 };
@@ -30,6 +30,7 @@ interface AddressFormData {
   city: string;
   state: string;
   zipCode: string;
+  monthlyMortgage: number;
 }
 
 export default function AddressForm({
@@ -70,35 +71,38 @@ export default function AddressForm({
       }),
     });
     const resData = await response.json();
+    console.log(resData);
     if (resData.status === 200) {
       setLoading(false);
-      router.push(`/application/mortgage-address/${cardApplicationId}`);
+      router.push(`/application/employment/${cardApplicationId}`);
     } else {
       setLoading(false);
       setMessage("Error. Please Try Again");
     }
   }
   useEffect(() => {
-    async function fetchCurrentAddress() {
+    async function fetchApplication() {
       const response = await fetch(
-        `/api/application/fetch-current-address/${cardApplicationId}`,
+        `/api/application/fetch-application/${cardApplicationId}`,
         {
           headers: {
             secretKey: apiSecretKey,
           },
         },
       );
-      const { status, address } = await response.json();
+      const { status, cardApplication } = await response.json();
+      console.log(cardApplication);
       if (status === 200) {
-        setValue("address", address.address1);
-        setValue("unit", address.address2);
-        setValue("city", address.city);
-        setValue("state", address.state);
-        setValue("zipCode", address.zipCode);
+        setValue("address", cardApplication.currentAddress.address1);
+        setValue("unit", cardApplication.currentAddress.address2);
+        setValue("city", cardApplication.currentAddress.city);
+        setValue("state", cardApplication.currentAddress.state);
+        setValue("zipCode", cardApplication.currentAddress.zipCode);
+        setValue("monthlyMortgage", Number(cardApplication.mortgageAmount));
         setDisplayAutoComplete(false);
       }
     }
-    fetchCurrentAddress();
+    fetchApplication();
   }, [apiSecretKey, cardApplicationId, setValue]);
 
   return (
@@ -193,6 +197,9 @@ export default function AddressForm({
                   />
                 )}
               />
+              {errors.address && (
+                <p className="text-sm text-red-500">{errors.address.message}</p>
+              )}
             </div>
             <div className="mb-5">
               <Controller
@@ -234,6 +241,9 @@ export default function AddressForm({
                   />
                 )}
               />
+              {errors.city && (
+                <p className="text-sm text-red-500">{errors.city.message}</p>
+              )}
             </div>
             <div className="mb-5">
               <Controller
@@ -256,6 +266,9 @@ export default function AddressForm({
                   />
                 )}
               />
+              {errors.state && (
+                <p className="text-sm text-red-500">{errors.state.message}</p>
+              )}
             </div>
             <div className="mb-0">
               <Controller
@@ -278,6 +291,53 @@ export default function AddressForm({
                   />
                 )}
               />
+              {errors.zipCode && (
+                <p className="text-sm text-red-500">{errors.zipCode.message}</p>
+              )}
+            </div>
+            <div className="mb-0">
+              <Controller
+                name="monthlyMortgage"
+                control={control}
+                rules={{
+                  required: "Monthly Mortgage Payment is required",
+                  validate: (value) => {
+                    const regex = /^\d+(\.\d{0,2})?$/;
+                    return (
+                      regex.test(String(value)) ||
+                      "Please enter a valid amount (up to 2 decimal places)"
+                    );
+                  },
+                }}
+                render={({ field }) => (
+                  <div className="relative">
+                    <input
+                      {...field}
+                      type="number"
+                      className="input input-bordered w-full pl-8"
+                      placeholder="Monthly Mortgage Payment"
+                      value={field.value}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        const regex = /^\d+(\.\d{0,2})?$/;
+                        if (regex.test(value)) {
+                          field.onChange(value);
+                        }
+                      }}
+                      step="0.01"
+                      min="0"
+                    />
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                      <span className="text-gray-500 sm:text-sm">$</span>
+                    </div>
+                  </div>
+                )}
+              />
+              {errors.monthlyMortgage && (
+                <p className="text-sm text-red-500">
+                  {errors.monthlyMortgage.message}
+                </p>
+              )}
             </div>
             <div className="mt-12 flex w-full flex-col gap-5 max-md:mt-10 max-md:max-w-full max-md:flex-wrap">
               <div className="flex flex-col justify-between gap-5 whitespace-nowrap text-base font-semibold leading-6">
@@ -307,7 +367,7 @@ export default function AddressForm({
               </div>
               <div className="mt-2 flex w-fit shrink-0 grow basis-0 flex-col self-start">
                 <div className="text-lg font-medium leading-7 text-black">
-                  2/6
+                  2/4
                 </div>
                 <div className="mt-2.5 flex gap-2 p-1.5">
                   <Image
@@ -319,20 +379,6 @@ export default function AddressForm({
                   />
                   <Image
                     src={barFill}
-                    alt="Progress bar"
-                    style={
-                      window.innerWidth < 640 ? styles.barMobile : styles.bar
-                    }
-                  />
-                  <Image
-                    src={barNoFill}
-                    alt="Progress bar"
-                    style={
-                      window.innerWidth < 640 ? styles.barMobile : styles.bar
-                    }
-                  />
-                  <Image
-                    src={barNoFill}
                     alt="Progress bar"
                     style={
                       window.innerWidth < 640 ? styles.barMobile : styles.bar

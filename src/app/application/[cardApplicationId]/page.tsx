@@ -28,7 +28,6 @@ export default async function ApplicationRedirectPage({
   if (!session || !user || session.user?.email !== user.email) {
     redirect("/application");
   }
-  onboardingRedirect(cardApplication);
 
   return (
     <div className="flex flex-col items-center justify-center  p-4">

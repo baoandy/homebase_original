@@ -33,7 +33,7 @@ export default async function MortgageAddress({
   if (!session || !user || session.user?.email !== user.email) {
     redirect("/application");
   }
-  onboardingRedirect(cardApplication);
+  // onboardingRedirect(cardApplication);
 
   return (
     <main className="mt-20 w-full max-w-[1360px] self-center max-md:mt-10 max-md:max-w-full">

@@ -33,7 +33,7 @@ export default async function MortgageDetails({
   if (!session || !user || session.user?.email !== user.email) {
     redirect("/application");
   }
-  onboardingRedirect(cardApplication);
+  // onboardingRedirect(cardApplication);
 
   return (
     // <div className="mx-auto max-w-md p-4">

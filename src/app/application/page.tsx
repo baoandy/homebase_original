@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/db/prisma";
 import { Sign } from "crypto";
 import { redirect } from "next/navigation";
+import { onboardingRedirect } from "@/lib/helper/onboardingRedirect";
 
 export default async function Application() {
   const session = await auth();
