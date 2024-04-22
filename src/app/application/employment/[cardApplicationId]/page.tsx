@@ -6,6 +6,7 @@ import Link from "next/link";
 import EmploymentDetailsForm from "./EmploymentForm";
 import Image from "next/image";
 import homeCleaners from "@/app/assets/Onboarding/homeCleaners.png";
+import womanOffice from "@/app/assets/Onboarding/womanOffice.png";
 
 import { env } from "@/lib/env";
 
@@ -41,7 +42,7 @@ export default async function EmploymentDetails({
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
         <div className="flex w-[58%] flex-col max-md:ml-0 max-md:w-full">
           <Image
-            src={homeCleaners}
+            src={womanOffice}
             alt="Decorative image"
             className="aspect-square w-full max-md:mt-10 max-md:max-w-full"
           />

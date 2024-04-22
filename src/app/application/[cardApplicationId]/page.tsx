@@ -29,7 +29,7 @@ export default async function ApplicationRedirectPage({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center  p-4">
+    <div className="flex min-h-screen flex-col items-center  justify-center p-4">
       <header className="mb-12 text-center">
         <h1 className="text-3xl font-semibold">
           Welcome to Your Credit Journey
@@ -40,15 +40,12 @@ export default async function ApplicationRedirectPage({
       </header>
       <div className="flex flex-col items-center">
         <Link
-          className="focus:shadow-outline rounded-lg bg-blue-600 px-12 py-3 font-bold text-white transition-colors hover:bg-blue-700 focus:outline-none"
+          className="focus:shadow-outline rounded-lg bg-primary px-12 py-3 font-bold text-white transition-colors hover:bg-green-600 focus:outline-none"
           href={`/application/personal-details/${cardApplicationId}`}
         >
           Go to Application
         </Link>
       </div>
-      <footer className="absolute bottom-4 w-full text-center text-sm">
-        <p>Powered by Your Trusted Bank</p>
-      </footer>
     </div>
   );
 }

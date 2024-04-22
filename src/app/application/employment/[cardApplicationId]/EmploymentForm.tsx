@@ -291,7 +291,7 @@ export default function EmploymentDetailsForm({
           </>
         )}
 
-        <div className="mt-32 flex  w-full flex-col gap-5 max-md:mt-10 max-md:max-w-full max-md:flex-wrap">
+        <div className="mt-12 flex  w-full flex-col gap-5 max-md:mt-10 max-md:max-w-full max-md:flex-wrap">
           <div className="flex justify-between gap-5 whitespace-nowrap text-base font-semibold leading-6">
             <button
               type="submit"

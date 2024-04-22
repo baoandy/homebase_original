@@ -2,6 +2,20 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import Image from "next/image";
+import barFill from "@/app/assets/Onboarding/barFill.png";
+import barNoFill from "@/app/assets/Onboarding/barNoFill.png";
+
+const styles = {
+  bar: {
+    width: "75px", // Default width for non-mobile devices
+    height: "3px",
+  },
+  barMobile: {
+    width: "22px", // Width for mobile devices
+    height: "3px",
+  },
+};
 
 interface SubmitFormData {
   cardApplicationId: string;
@@ -143,16 +157,55 @@ export default function MortgageDetailsForm({
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
-            >
-              {loading ? (
-                <span className="loading loading-spinner loading-sm"></span>
-              ) : (
-                "Submit Application"
-              )}
-            </button>
+            <div className="mt-12 flex  w-full flex-col gap-5 max-md:mt-10 max-md:max-w-full max-md:flex-wrap">
+              <div className="flex justify-between gap-5 whitespace-nowrap text-base font-semibold leading-6">
+                <button
+                  type="submit"
+                  className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+                >
+                  {loading ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
+              </div>
+              <div className="mt-2 flex w-fit shrink-0 grow basis-0 flex-col self-start">
+                <div className="text-lg font-medium leading-7 text-black">
+                  4/4
+                </div>
+                <div className="mt-2.5 flex gap-2 p-1.5">
+                  <Image
+                    src={barFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                  <Image
+                    src={barFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                  <Image
+                    src={barFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                  <Image
+                    src={barFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       )}

@@ -7,6 +7,7 @@ import PersonalDetailsForm from "./PersonalDetailsForm";
 import { env } from "@/lib/env";
 import Image from "next/image";
 import homeCleaners from "@/app/assets/Onboarding/homeCleaners.png";
+import { AccountIcon } from "@/components/Icons/OnboardingIcons";
 
 export default async function PersonalDetails({
   params,
@@ -37,11 +38,12 @@ export default async function PersonalDetails({
     <main className="mt-20 w-full max-w-[1360px] self-center max-md:mt-10 max-md:max-w-full">
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
         <div className="flex w-[58%] flex-col max-md:ml-0 max-md:w-full">
-          <Image
+          {/* <Image
             src={homeCleaners}
             alt="Decorative image"
             className="aspect-square w-full max-md:mt-10 max-md:max-w-full"
-          />
+          /> */}
+          <AccountIcon />
         </div>
         <div className="ml-5 flex w-[42%] flex-col max-md:ml-0 max-md:w-full">
           <section className="mt-24 flex grow flex-col px-5 max-md:mt-10 max-md:max-w-full">
