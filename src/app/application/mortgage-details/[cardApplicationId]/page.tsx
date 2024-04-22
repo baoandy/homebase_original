@@ -19,6 +19,7 @@ export default async function MortgageDetails({
     where: { id: cardApplicationId },
     include: {
       currentAddress: true,
+      user: true,
     },
   });
   if (!cardApplication) {
@@ -31,6 +32,7 @@ export default async function MortgageDetails({
   if (!session || !user || session.user?.email !== user.email) {
     redirect("/application");
   }
+  // onboardingRedirect(cardApplication);
 
   return (
     // <div className="mx-auto max-w-md p-4">

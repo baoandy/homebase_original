@@ -2,6 +2,20 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import Image from "next/image";
+import barFill from "@/app/assets/Onboarding/barFill.png";
+import barNoFill from "@/app/assets/Onboarding/barNoFill.png";
+
+const styles = {
+  bar: {
+    width: "75px", // Default width for non-mobile devices
+    height: "3px",
+  },
+  barMobile: {
+    width: "22px", // Width for mobile devices
+    height: "3px",
+  },
+};
 
 interface SubmitFormData {
   cardApplicationId: string;
@@ -57,6 +71,13 @@ export default function MortgageDetailsForm({
       const resData = await response.json();
       if (resData.status === 200) {
         const { cardApplication } = resData;
+        if (!cardApplication.user.first_name) {
+          router.push(`/application/personal-details/${cardApplicationId}`);
+        } else if (!cardApplication.currentAddressId) {
+          router.push(`/application/current-address/${cardApplicationId}`);
+        } else if (!cardApplication.employmentStatus) {
+          router.push(`/application/employment-status/${cardApplicationId}`);
+        }
         if (cardApplication.ssid) {
           setSubmittedApplication(true);
         }
@@ -67,14 +88,25 @@ export default function MortgageDetailsForm({
   return (
     <>
       {submittedApplication && (
-        <h1 className="mb-4 text-lg font-semibold">
-          Application Submitted Successfully!
-        </h1>
+        <div className="flex w-full flex-col items-center">
+          <h1 className="text-5xl font-bold capitalize leading-[62.4px] text-zinc-800 max-md:max-w-full max-md:text-4xl">
+            <span className="text-slate-600">Application</span> Submitted
+          </h1>
+          <p className="my-5 text-base leading-6 text-zinc-800 max-md:max-w-full">
+            Thanks for submitting your application. We will review your
+            application and get back to you soon.
+          </p>
+        </div>
       )}
       {!submittedApplication && (
-        <>
-          <h1 className="mb-4 text-lg font-semibold">One More Step!</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex w-full flex-col items-center">
+          <h1 className="text-5xl font-bold capitalize leading-[62.4px] text-zinc-800 max-md:max-w-full max-md:text-4xl">
+            <span className="text-slate-600">Submit</span> Application
+          </h1>
+          <p className="my-5 text-base leading-6 text-zinc-800 max-md:max-w-full">
+            Please enter your Social Security ID to submit your application.
+          </p>
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div className="mb-5">
               <Controller
                 name="ssId"
@@ -125,18 +157,57 @@ export default function MortgageDetailsForm({
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
-            >
-              {loading ? (
-                <span className="loading loading-spinner loading-sm"></span>
-              ) : (
-                "Submit Application"
-              )}
-            </button>
+            <div className="mt-12 flex  w-full flex-col gap-5 max-md:mt-10 max-md:max-w-full max-md:flex-wrap">
+              <div className="flex justify-between gap-5 whitespace-nowrap text-base font-semibold leading-6">
+                <button
+                  type="submit"
+                  className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+                >
+                  {loading ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
+              </div>
+              <div className="mt-2 flex w-fit shrink-0 grow basis-0 flex-col self-start">
+                <div className="text-lg font-medium leading-7 text-black">
+                  4/4
+                </div>
+                <div className="mt-2.5 flex gap-2 p-1.5">
+                  <Image
+                    src={barFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                  <Image
+                    src={barFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                  <Image
+                    src={barFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                  <Image
+                    src={barFill}
+                    alt="Progress bar"
+                    style={
+                      window.innerWidth < 640 ? styles.barMobile : styles.bar
+                    }
+                  />
+                </div>
+              </div>
+            </div>
           </form>
-        </>
+        </div>
       )}
     </>
   );

@@ -6,6 +6,8 @@ import Link from "next/link";
 import CurrentAddressForm from "./CurrentAddressForm";
 import Image from "next/image";
 import homeCleaners from "@/app/assets/Onboarding/homeCleaners.png";
+import addressImg from "@/app/assets/Onboarding/addressImg.png";
+import { AddressIcon } from "@/components/Icons/OnboardingIcons";
 
 import { env } from "@/lib/env";
 
@@ -17,6 +19,9 @@ export default async function CurrentAddress({
   const cardApplicationId = params.cardApplicationId;
   const cardApplication = await prisma.cardApplication.findUnique({
     where: { id: cardApplicationId },
+    include: {
+      user: true,
+    },
   });
   if (!cardApplication) {
     redirect("/application");
@@ -28,15 +33,14 @@ export default async function CurrentAddress({
   if (!session || !user || session.user?.email !== user.email) {
     redirect("/application");
   }
+  if (cardApplication.status !== "CREATED") {
+    redirect(`/application/submit/${cardApplicationId}`);
+  }
   return (
     <main className="mt-20 w-full max-w-[1360px] self-center max-md:mt-10 max-md:max-w-full">
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
         <div className="flex w-[58%] flex-col max-md:ml-0 max-md:w-full">
-          <Image
-            src={homeCleaners}
-            alt="Decorative image"
-            className="aspect-square w-full max-md:mt-10 max-md:max-w-full"
-          />
+          <AddressIcon />
         </div>
         <div className="ml-5 mt-24 flex w-[42%] flex-col max-md:ml-0 max-md:w-full">
           <section className=" flex grow flex-col px-5 max-md:mt-10 max-md:max-w-full">

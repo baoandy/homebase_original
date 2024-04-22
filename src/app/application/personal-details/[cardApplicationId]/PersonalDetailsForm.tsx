@@ -10,11 +10,11 @@ import barNoFill from "@/app/assets/Onboarding/barNoFill.png";
 
 const styles = {
   bar: {
-    width: "50px", // Default width for non-mobile devices
+    width: "75px", // Default width for non-mobile devices
     height: "3px",
   },
   barMobile: {
-    width: "15px", // Width for mobile devices
+    width: "22px", // Width for mobile devices
     height: "3px",
   },
 };
@@ -62,7 +62,6 @@ export default function PersonalDetailsForm({
   }
   useEffect(() => {
     async function fetchPersonalDetails() {
-      console.log("Fetching personal details");
       const response = await fetch(
         `/api/application/fetch-personal-details/${cardApplicationId}`,
         {
@@ -252,20 +251,10 @@ export default function PersonalDetailsForm({
             </button>
           </div>
           <div className="mt-2 flex w-fit shrink-0 grow basis-0 flex-col self-start">
-            <div className="text-lg font-medium leading-7 text-black">1/6</div>
+            <div className="text-lg font-medium leading-7 text-black">1/4</div>
             <div className="mt-2.5 flex gap-2 p-1.5">
               <Image
                 src={barFill}
-                alt="Progress bar"
-                style={window.innerWidth < 640 ? styles.barMobile : styles.bar}
-              />
-              <Image
-                src={barNoFill}
-                alt="Progress bar"
-                style={window.innerWidth < 640 ? styles.barMobile : styles.bar}
-              />
-              <Image
-                src={barNoFill}
                 alt="Progress bar"
                 style={window.innerWidth < 640 ? styles.barMobile : styles.bar}
               />
