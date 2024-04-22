@@ -57,6 +57,13 @@ export default function MortgageDetailsForm({
       const resData = await response.json();
       if (resData.status === 200) {
         const { cardApplication } = resData;
+        if (!cardApplication.user.first_name) {
+          router.push(`/application/personal-details/${cardApplicationId}`);
+        } else if (!cardApplication.currentAddressId) {
+          router.push(`/application/current-address/${cardApplicationId}`);
+        } else if (!cardApplication.employmentStatus) {
+          router.push(`/application/employment-status/${cardApplicationId}`);
+        }
         if (cardApplication.ssid) {
           setSubmittedApplication(true);
         }

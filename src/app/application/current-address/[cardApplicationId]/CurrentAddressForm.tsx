@@ -93,17 +93,29 @@ export default function AddressForm({
       const { status, cardApplication } = await response.json();
       console.log(cardApplication);
       if (status === 200) {
-        setValue("address", cardApplication.currentAddress.address1);
-        setValue("unit", cardApplication.currentAddress.address2);
-        setValue("city", cardApplication.currentAddress.city);
-        setValue("state", cardApplication.currentAddress.state);
-        setValue("zipCode", cardApplication.currentAddress.zipCode);
-        setValue("monthlyMortgage", Number(cardApplication.mortgageAmount));
-        setDisplayAutoComplete(false);
+        if (!cardApplication.user.first_name) {
+          router.push(`/application/personal-details/${cardApplicationId}`);
+          return;
+        }
+        if (cardApplication.currentAddressId) {
+          if (cardApplication.currentAddress.address1)
+            setValue("address", cardApplication.currentAddress.address1);
+          if (cardApplication.currentAddress.address2)
+            setValue("unit", cardApplication.currentAddress.address2);
+          if (cardApplication.currentAddress.city)
+            setValue("city", cardApplication.currentAddress.city);
+          if (cardApplication.currentAddress.state)
+            setValue("state", cardApplication.currentAddress.state);
+          if (cardApplication.currentAddress.zipCode)
+            setValue("zipCode", cardApplication.currentAddress.zipCode);
+          if (cardApplication.mortgageAmount)
+            setValue("monthlyMortgage", Number(cardApplication.mortgageAmount));
+          setDisplayAutoComplete(false);
+        }
       }
     }
     fetchApplication();
-  }, [apiSecretKey, cardApplicationId, setValue]);
+  }, [apiSecretKey, cardApplicationId, setValue, router]);
 
   return (
     <div className="flex w-full flex-col items-center">

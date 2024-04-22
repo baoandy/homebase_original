@@ -62,7 +62,6 @@ export default function PersonalDetailsForm({
   }
   useEffect(() => {
     async function fetchPersonalDetails() {
-      console.log("Fetching personal details");
       const response = await fetch(
         `/api/application/fetch-personal-details/${cardApplicationId}`,
         {

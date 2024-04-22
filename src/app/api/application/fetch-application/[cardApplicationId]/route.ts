@@ -20,6 +20,7 @@ export async function GET(
       include: {
         currentAddress: true,
         mortgageAddress: true,
+        user: true,
       },
     });
     if (!cardApplication) {

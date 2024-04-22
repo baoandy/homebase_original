@@ -90,6 +90,12 @@ export default function EmploymentDetailsForm({
       const resData = await response.json();
       if (resData.status === 200) {
         const { cardApplication } = resData;
+        if (!cardApplication.user.first_name) {
+          router.push(`/application/personal-details/${cardApplicationId}`);
+        } else if (!cardApplication.currentAddressId) {
+          router.push(`/application/current-address/${cardApplicationId}`);
+        }
+
         setValue("annualIncome", cardApplication.annualIncome);
         setValue("employmentStatus", cardApplication.employmentStatus);
         if (
@@ -107,7 +113,7 @@ export default function EmploymentDetailsForm({
       }
     }
     fetchApplication();
-  }, [apiSecretKey, cardApplicationId, setValue]);
+  }, [apiSecretKey, cardApplicationId, setValue, router]);
   return (
     <div className="flex w-full flex-col items-center">
       <h1 className="text-5xl font-bold capitalize leading-[62.4px] text-zinc-800 max-md:max-w-full max-md:text-4xl">
