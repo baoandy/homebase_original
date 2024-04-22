@@ -7,3 +7,9 @@ export async function applicationSignin(formData: FormData) {
     redirectTo: "/application",
   });
 }
+
+export async function SignIn(formData: FormData) {
+  await signIn("sendgrid", formData, {
+    redirectTo: "/dashboard",
+  });
+}
