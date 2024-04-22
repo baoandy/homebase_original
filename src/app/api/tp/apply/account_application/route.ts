@@ -8,7 +8,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   // and adds account to our database
   try {
     //   need to get product id from our database or TP and pass it here
-    const account_product = await prisma.accountProduct.findFirst({})
+    const account_product = await prisma.accountProduct.findFirst({});
 
     const body = await req.json();
     const { user_id } = body;
@@ -41,11 +41,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
       primary_person_application_id,
     };
 
-    const result = await treasuryPrimeApiCall(
-      "POST",
-      "/apply/account_application",
-      accountApplication,
-    );
+    const result = await treasuryPrimeApiCall({
+      req_type: "POST",
+      url: "/apply/account_application",
+      body: accountApplication,
+      userId: user_id,
+    });
 
     const response = await result?.json();
     let data = response.data;
@@ -57,7 +58,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         message: data.error,
       });
     }
-    
+
     data.userId = user_id;
     console.log(data);
 
@@ -76,29 +77,26 @@ export async function POST(req: NextRequest, res: NextResponse) {
 }
 
 export async function GET(req: NextRequest, res: NextResponse) {
-    console.log(req.method, req.url);
-    // GET method returns all account applications
-    // we might want to use it to update all account statuses with this endpoint
-    try {
-      
-      const result = await treasuryPrimeApiCall(
-        "GET",
-        `/apply/account_application`,
-      );
-      const response = await result?.json();
-      const data = response.data;
-  
-      console.log(data);
-  
-      return NextResponse.json({
-        status: 200,
-        message: "List of Applications returned successfully",
-        data: data
-      })
-  
-    } catch (error) {
-      console.log(error);
-      return NextResponse.json({ status: 500, message: "An error occurred" });
-    }
-  
+  console.log(req.method, req.url);
+  // GET method returns all account applications
+  // we might want to use it to update all account statuses with this endpoint
+  try {
+    const result = await treasuryPrimeApiCall({
+      req_type: "GET",
+      url: `/apply/account_application`,
+    });
+    const response = await result?.json();
+    const data = response.data;
+
+    console.log(data);
+
+    return NextResponse.json({
+      status: 200,
+      message: "List of Applications returned successfully",
+      data: data,
+    });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ status: 500, message: "An error occurred" });
   }
+}

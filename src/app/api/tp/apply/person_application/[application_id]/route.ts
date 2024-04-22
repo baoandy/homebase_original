@@ -1,24 +1,34 @@
+import { prisma } from "@/lib/db/prisma";
 import treasuryPrimeApiCall from "@/lib/helper/treasuryPrimeApiCall";
-import type { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 // this api returns the person application data from treasuryprime by application_id
 // *** Retrieve a Person Application
 // https://developers.sandbox.treasuryprime.com/docs/person-application#retrieve-a-person-application
 
 export async function GET(
-  req: NextApiRequest,
+  req: NextRequest,
   { params }: { params: { application_id: string } },
 ) {
   console.log(req.method, req.url);
 
+  const user = await prisma.user.findUnique({
+    where: {
+      application_id: params.application_id,
+    },
+    select: {
+      id: true,
+    },
+  })
+  
   try {
     const { application_id } = params;
 
-    const result = await treasuryPrimeApiCall(
-      "GET",
-      `/apply/person_application/${application_id}`,
-    );
+    const result = await treasuryPrimeApiCall({
+      req_type: "GET",
+      url:`/apply/person_application/${application_id}`,
+      userId: user?.id
+  });
     const response = await result?.json();
     const data = response.data;
 

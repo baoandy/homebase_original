@@ -108,6 +108,20 @@ export default function PersonData({ PersonInfo }: any) {
     console.log(data);
   };
 
+  
+
+  const ListAllKYC = async () => {
+    const path = `/api/tp/apply/kyc_product`;
+    const res = await fetch(path, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    console.log(data);
+  };
+
   return (
     <div className="flex w-full flex-col gap-3 ">
       <div className="flex w-full flex-row gap-3">
@@ -191,6 +205,15 @@ export default function PersonData({ PersonInfo }: any) {
         >
           Update Card [PATCH]
         </button>
+      </div>
+      <div className="flex w-full flex-row justify-between gap-3">
+        <button
+          onClick={ListAllKYC}
+          className="hover:text-whitew-fit btn btn-success bg-orange-400 hover:bg-orange-800"
+        >
+          List All KYC [GET]
+        </button>
+
       </div>
     </div>
   );
