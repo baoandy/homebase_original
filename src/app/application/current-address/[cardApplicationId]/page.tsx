@@ -6,7 +6,6 @@ import Link from "next/link";
 import CurrentAddressForm from "./CurrentAddressForm";
 import Image from "next/image";
 import homeCleaners from "@/app/assets/Onboarding/homeCleaners.png";
-import { onboardingRedirect } from "@/lib/helper/onboardingRedirect";
 
 import { env } from "@/lib/env";
 

@@ -8,7 +8,6 @@ import { env } from "@/lib/env";
 import MortgageForm from "./MortgageAddressForm";
 import Image from "next/image";
 import homeCleaners from "@/app/assets/Onboarding/homeCleaners.png";
-import { onboardingRedirect } from "@/lib/helper/onboardingRedirect";
 
 export default async function MortgageAddress({
   params,

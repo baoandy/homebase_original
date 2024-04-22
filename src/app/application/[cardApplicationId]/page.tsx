@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
 import { auth } from "@/auth";
 import Link from "next/link";
-import { onboardingRedirect } from "@/lib/helper/onboardingRedirect";
 
 export default async function ApplicationRedirectPage({
   params,

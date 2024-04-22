@@ -7,7 +7,6 @@ import PersonalDetailsForm from "./PersonalDetailsForm";
 import { env } from "@/lib/env";
 import Image from "next/image";
 import homeCleaners from "@/app/assets/Onboarding/homeCleaners.png";
-import { onboardingRedirect } from "@/lib/helper/onboardingRedirect";
 
 export default async function PersonalDetails({
   params,
