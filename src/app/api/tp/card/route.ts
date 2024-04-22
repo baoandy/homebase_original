@@ -59,7 +59,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
       card_product_id: "TBD",
     };
 
-    const result = await treasuryPrimeApiCall("POST", "/card", cardCreateBody);
+    const result = await treasuryPrimeApiCall({
+      req_type: "POST",
+      url: "/card",
+      body: cardCreateBody,
+      userId: user_id,
+    });
 
     const response = await result?.json();
     const data = response.data;
@@ -98,7 +103,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
 export async function GET(req: NextRequest, res: NextResponse) {
   console.log(req.method, req.url);
   try {
-    const result = await treasuryPrimeApiCall("GET", `/card`);
+    const result = await treasuryPrimeApiCall({
+      req_type: "GET",
+      url: `/card`,
+    });
     const response = await result?.json();
     const data = response.data;
 

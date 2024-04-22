@@ -58,15 +58,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
       tin: userInfo.tin,
     };
 
-    const result = await treasuryPrimeApiCall(
-      "POST",
-      "/apply/person_application",
-      userApplication,
-    );
-    
+    const result = await treasuryPrimeApiCall({
+      req_type: "POST",
+      url: "/apply/person_application",
+      body: userApplication,
+      userId: user_id,
+    });
+
     const response = await result?.json();
     const data = response.data;
-    
+
     console.log(data);
 
     if (data.error) {
@@ -102,11 +103,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
 export async function GET(req: NextRequest, res: NextResponse) {
   console.log(req.method, req.url);
   try {
-    
-    const result = await treasuryPrimeApiCall(
-      "GET",
-      `/apply/person_application`,
-    );
+    const result = await treasuryPrimeApiCall({
+      req_type: "GET",
+      url: `/apply/person_application`,
+    });
     const response = await result?.json();
     const data = response.data;
 
@@ -115,12 +115,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
     return NextResponse.json({
       status: 200,
       message: "List of Applications returned successfully",
-      data: data
-    })
-
+      data: data,
+    });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ status: 500, message: "An error occurred" });
   }
-
 }
