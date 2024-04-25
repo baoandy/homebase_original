@@ -45,25 +45,32 @@ model User {
   last_name     String?
   date_of_birth String?
   phone_number  String?
+  userStatus    userStatus    @default(Unauthorized)
   address       userAddress[]
 
   citizenship citizen @default(US)
   tin         String?
 
-  account account[]
+  account AccountApplication[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   application_id String? @unique
 
-  addresses       Address[]
-  Session         Session[]
-  tp_communications   tp_communications[]
-  CardApplication CardApplication?
-  AdminUser       AdminUser?
+  addresses         Address[]
+  Session           Session[]
+  tp_communications tp_communications[]
+  CardApplication   CardApplication?
+  AdminUser         AdminUser?
+  PersonApplication PersonApplication[]
 
   @@map("user")
+}
+
+enum userStatus {
+  Authorized
+  Unauthorized
 }
 
 model AdminUser {
@@ -140,8 +147,9 @@ model CardApplication {
   yearMortgageOriginated Int?
   ssid                   String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  PersonApplication PersonApplication[]
 
   @@map("card_application")
 }
@@ -158,11 +166,41 @@ model Address {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  currentAddress  CardApplication[] @relation("CurrentAddress")
-  mortgageAddress CardApplication[] @relation("MortgageAddress")
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentAddress    CardApplication[]   @relation("CurrentAddress")
+  mortgageAddress   CardApplication[]   @relation("MortgageAddress")
+  personApplication PersonApplication[]
 
   @@map("address")
+}
+
+model PersonApplication {
+  id                  String          @id @default(uuid()) @db.Uuid
+  tp_person_id        String?
+  application_id      String?
+  userId              String          @db.Uuid
+  user                User            @relation(fields: [userId], references: [id])
+  cardApplicationId   String
+  cardApplication     CardApplication @relation(fields: [cardApplicationId], references: [id])
+  first_name          String
+  last_name           String
+  email_address       String
+  bank_data           Json?
+  citizenship         citizen
+  date_of_birth       String
+  document_ids        String[]
+  middle_name         String?
+  occupation          String?
+  phone_number        String
+  mailing_address     Json?
+  physical_address_id String          @db.Uuid
+  physical_address    Address?        @relation(fields: [physical_address_id], references: [id])
+
+  userData   Json?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("person_applications")
 }
 
 model userAddress {
@@ -181,15 +219,17 @@ model userAddress {
 }
 
 model accountProduct {
-  id          String    @unique
-  description String?
-  account     account[]
+  id                 String               @unique
+  description        String?
+  // account     AccountApplication[]
+  AccountApplication AccountApplication[]
 }
 
-model account {
+model AccountApplication {
   id                            String @id @unique
   userId                        String @db.Uuid
   account_product_id            String
+  accountType                   String
   primary_person_application_id String
   status                        String
   ownership_type                String
@@ -205,10 +245,14 @@ model account {
   created_at DateTime
   updated_at DateTime
 
-  bankdata       Json?
-  userdata       Json?
-  accountProduct accountProduct @relation(fields: [account_product_id], references: [id])
-  user           User           @relation(fields: [userId], references: [id])
+  bankdata         Json?
+  userdata         Json?
+  // accountProduct accountProduct @relation(fields: [account_product_id], references: [id])
+  user             User            @relation(fields: [userId], references: [id])
+  accountProduct   accountProduct? @relation(fields: [accountProductId], references: [id])
+  accountProductId String?
+
+  @@map("account_applications")
 }
 
 enum citizen {
@@ -220,16 +264,15 @@ enum addr_type {
   Mailing
 }
 
-
 model tp_communications {
-  id            String      @id @default(uuid()) @db.Uuid
-  userId        String?      @db.Uuid   // might be null if it's a system request not the user, like retreve all ...
-  method        String
-  url           String
-  request       Json?        //body, null for get
-  res_status    Int
-  responce      Json         //body
+  id         String  @id @default(uuid()) @db.Uuid
+  userId     String? @db.Uuid // might be null if it's a system request not the user, like retreve all ...
+  method     String
+  url        String
+  request    Json? //body, null for get
+  res_status Int
+  responce   Json //body
 
-  created_at    DateTime    @default(now())
-  user          User?      @relation(fields: [userId], references: [id])
+  created_at DateTime @default(now())
+  user       User?    @relation(fields: [userId], references: [id])
 }
