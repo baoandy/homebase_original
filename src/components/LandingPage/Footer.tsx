@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <div className="mx-auto mt-40 flex w-full flex-col items-center rounded-[32px] bg-zinc-800 px-4 pb-6 pt-12 lg:px-20">
+    <div className="mx-auto flex w-full flex-col items-center rounded-[32px] bg-zinc-800 px-4 pb-6 pt-12 lg:px-20">
       <div className="ml-6 mr-6 mt-3 self-stretch  max-md:max-w-full">
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
           <div className="flex w-[22%] flex-col max-md:ml-0 max-md:w-full">

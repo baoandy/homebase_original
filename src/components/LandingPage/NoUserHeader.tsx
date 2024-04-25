@@ -13,12 +13,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import SignOut from "@/actions/signOut";
 import { sign } from "crypto";
 
-interface HeaderProps {
-  loggedInUser: boolean;
-  firstName: string;
-  lastName: string;
-  signOut: () => Promise<void>;
-}
+interface HeaderProps {}
 
 interface ProfileButtonProps {
   firstName: string | null | undefined;
@@ -36,9 +31,9 @@ function ProfileButton({ firstName, lastName, signOut }: ProfileButtonProps) {
     await signOut();
   }
   return (
-    <Menu as="div" className="relative z-50 inline-block text-left">
-      <div className="z-50">
-        <Menu.Button className="z-50 inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900  hover:bg-gray-50">
+    <Menu as="div" className="relative inline-block text-left">
+      <div>
+        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900  hover:bg-gray-50">
           {firstName} {lastName}
           <ChevronDownIcon
             className="-mr-1 h-5 w-5 text-gray-400"
@@ -56,7 +51,7 @@ function ProfileButton({ firstName, lastName, signOut }: ProfileButtonProps) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             <Menu.Item>
               {({ active }) => (
@@ -79,7 +74,7 @@ function ProfileButton({ firstName, lastName, signOut }: ProfileButtonProps) {
                     type="submit"
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "z-50 block w-full px-4 py-2 text-left text-sm",
+                      "block w-full px-4 py-2 text-left text-sm",
                     )}
                     onClick={handleSignOut}
                   >
@@ -95,12 +90,7 @@ function ProfileButton({ firstName, lastName, signOut }: ProfileButtonProps) {
   );
 }
 
-export default function Header({
-  loggedInUser,
-  firstName,
-  lastName,
-  signOut,
-}: HeaderProps) {
+export default function Header({}: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const currentPath = usePathname();
 
@@ -115,34 +105,6 @@ export default function Header({
           <HBLogo />
         </Link>
       </div>
-
-      {loggedInUser && (
-        <div className="hidden gap-4 whitespace-nowrap font-semibold md:flex">
-          <div className="relative flex items-center justify-center">
-            <ProfileButton
-              firstName={firstName}
-              lastName={lastName}
-              signOut={signOut}
-            />
-          </div>
-        </div>
-      )}
-
-      {!loggedInUser && (
-        <div className="hidden gap-4 whitespace-nowrap font-semibold md:flex">
-          <Link href="/application">
-            <button className="btn-outline grow justify-center rounded-lg border border-solid border-[color:var(--Primary-color,#366871)] bg-white px-8 py-3.5 text-center text-[#366871] hover:bg-[#366871]">
-              Apply
-            </button>
-          </Link>
-
-          <Link href="/login">
-            <button className="grow justify-center rounded-lg border border-transparent bg-[#366871] px-8 py-3.5 text-center text-stone-50 hover:border hover:border-solid hover:border-[color:var(--Primary-color,#366871)] hover:bg-white hover:text-[#366871]">
-              Login
-            </button>
-          </Link>
-        </div>
-      )}
 
       {/* <div className="md:hidden">
         <button

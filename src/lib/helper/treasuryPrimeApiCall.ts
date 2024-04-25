@@ -21,7 +21,7 @@ interface TreasuryPrimeApiCallOptions {
 
 async function treasuryPrimeApiCall(options: TreasuryPrimeApiCallOptions) {
   const { req_type, url, body, userId } = options;
-  
+
   const tp_url = tpBaseUrl + url;
   const tp_auth = `Basic ${btoa(`${apiKeyId}:${apiKeyValue}`)}`;
   // POST ------------------------------------------------------------------------
