@@ -10,15 +10,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (request.nextUrl.pathname.startsWith("/api")) {
-    const referrer = request.headers.get("referrer");
-    if (referrer?.startsWith("localhost:3000")) {
-      return NextResponse.next();
-    }
-    if (!referrer || !referrer.startsWith("https://www.yourhomebase.co")) {
-      return NextResponse.json({ status: 403, message: "Unauthorized" });
-    }
-  }
+  // if (request.nextUrl.pathname.startsWith("/api")) {
+  //   const referrer = request.headers.get("referrer");
+  //   if (referrer?.startsWith("localhost:3000")) {
+  //     return NextResponse.next();
+  //   }
+  //   if (!referrer || !referrer.startsWith("https://www.yourhomebase.co")) {
+  //     return NextResponse.json({ status: 403, message: "Unauthorized" });
+  //   }
+  // }
 
   return NextResponse.next();
 }
