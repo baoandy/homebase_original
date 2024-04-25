@@ -39,14 +39,14 @@ export default function Banner() {
         </p>
       </div>
       <div className="flex flex-1 justify-end">
-        <button
+        {/* <button
           type="button"
           className="rounded-md bg-white p-1 text-primary hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-white"
           onClick={() => setIsBannerVisible(false)}
         >
           <span className="sr-only">Dismiss</span>
           <XMarkIcon className="h-5 w-5" aria-hidden="true" />
-        </button>
+        </button> */}
       </div>
     </div>
   );
