@@ -10,9 +10,11 @@ const envSchema = zod.object({
   TREASURYPRIME_KEY_ID: zod.string().min(1),
   TREASURYPRIME_KEY_SECRET: zod.string().min(1),
 
+  TREASURYPRIME_PERSONAL_CHECKINGS_PRODUCT_ID: zod.string().min(1),
+  TREASURYPRIME_PERSONAL_SAVINGS_PRODUCT_ID: zod.string().min(1),
+
   GOOGLE_PLACES_API_KEY: zod.string().min(1),
   SSID_SECRET: zod.string().min(1),
-
 });
 
 export const env = envSchema.parse(process.env);

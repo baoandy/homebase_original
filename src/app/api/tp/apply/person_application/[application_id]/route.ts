@@ -19,16 +19,16 @@ export async function GET(
     select: {
       id: true,
     },
-  })
-  
+  });
+
   try {
     const { application_id } = params;
 
     const result = await treasuryPrimeApiCall({
       req_type: "GET",
-      url:`/apply/person_application/${application_id}`,
-      userId: user?.id
-  });
+      url: `/apply/person_application/${application_id}`,
+      userId: user?.id,
+    });
     const response = await result?.json();
     const data = response.data;
 

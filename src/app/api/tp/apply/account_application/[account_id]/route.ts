@@ -13,14 +13,14 @@ export async function GET(
   try {
     const { account_id } = params;
 
-    const user = await prisma.account.findUnique({
+    const user = await prisma.accountApplication.findUnique({
       where: {
         id: account_id,
       },
       select: {
         userId: true,
       },
-    })
+    });
 
     const result = await treasuryPrimeApiCall({
       req_type: "GET",
@@ -40,7 +40,7 @@ export async function GET(
       });
     }
 
-    const account = await prisma.account.findUnique({
+    const account = await prisma.accountApplication.findUnique({
       where: { id: account_id },
       select: { status: true }, // Select only the status field
     });
@@ -48,7 +48,7 @@ export async function GET(
     // Check if the current status in the database is different from the new status
     if (account && account.status !== data.status) {
       // Update the status if it's different
-      const updatedAccount = await prisma.account.update({
+      const updatedAccount = await prisma.accountApplication.update({
         where: { id: account_id },
         data: { status: data.status },
       });

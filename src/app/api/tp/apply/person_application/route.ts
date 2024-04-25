@@ -2,6 +2,9 @@ import { prisma } from "@/lib/db/prisma";
 import { addr_type } from "@prisma/client";
 import { NextResponse, NextRequest } from "next/server";
 import treasuryPrimeApiCall from "@/lib/helper/treasuryPrimeApiCall";
+import { env } from "@/lib/env";
+import { decrypt } from "@/lib/helper/encrypt";
+import getStateAbbreviation from "@/lib/helper/stateMapper";
 
 // this api crteates a person application in treasuryprime, once create we store the application_id in our database
 // https://developers.sandbox.treasuryprime.com/docs/person-application#retrieve-a-person-application
@@ -10,37 +13,40 @@ import treasuryPrimeApiCall from "@/lib/helper/treasuryPrimeApiCall";
 export async function POST(req: NextRequest, res: NextResponse) {
   console.log(req.method, req.url);
   try {
-    const body = await req.json();
-    const { user_id } = body;
-
-    const userInfo = await prisma.user.findUnique({
+    const secretKey = req.headers.get("secretKey");
+    if (secretKey !== env.API_SECRET_KEY) {
+      return NextResponse.json({ status: 403, message: "Unauthorized" });
+    }
+    const { user_id, cardApplicationId } = await req.json();
+    const cardApplication = await prisma.cardApplication.findUnique({
       where: {
-        id: user_id,
+        id: cardApplicationId,
       },
       include: {
-        account: true,
-        address: {
-          where: { address_type: addr_type.Physical },
-          select: {
-            street_line_1: true,
-            street_line_2: true,
-            city: true,
-            state: true,
-            postal_code: true,
-            country: true,
-          },
-        },
+        user: true,
+        currentAddress: true,
       },
     });
-
-    if (!userInfo) {
+    if (
+      !cardApplication ||
+      !cardApplication.user ||
+      !cardApplication.currentAddress ||
+      !cardApplication.ssid ||
+      !cardApplication.user.email ||
+      !cardApplication.user.first_name ||
+      !cardApplication.user.last_name ||
+      !cardApplication.user.citizenship ||
+      !cardApplication.user.date_of_birth ||
+      !cardApplication.user.phone_number ||
+      !cardApplication.currentAddressId
+    ) {
       return NextResponse.json({
         status: 404,
-        message: "User not found",
+        message: "Insufficient data to create application",
       });
     }
 
-    if (userInfo.application_id) {
+    if (cardApplication.user.application_id) {
       return NextResponse.json({
         status: 400,
         message: "Application already created for the user",
@@ -48,51 +54,78 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
 
     const userApplication = {
-      email_address: userInfo.email,
-      first_name: userInfo.first_name,
-      last_name: userInfo.last_name,
-      citizenship: userInfo.citizenship,
-      date_of_birth: userInfo.date_of_birth,
-      phone_number: userInfo.phone_number,
-      physical_address: userInfo.address[0],
-      tin: userInfo.tin,
+      email_address: cardApplication.user.email,
+      first_name: cardApplication.user.first_name,
+      last_name: cardApplication.user.last_name,
+      citizenship: cardApplication.user.citizenship,
+      date_of_birth: cardApplication.user.date_of_birth,
+      phone_number: cardApplication.user.phone_number,
+      physical_address: {
+        street_line_1: cardApplication.currentAddress.address1,
+        street_line_2: cardApplication.currentAddress.address2,
+        city: cardApplication.currentAddress.city,
+        state: getStateAbbreviation(cardApplication.currentAddress.state),
+        country: cardApplication.currentAddress.country,
+        postal_code: cardApplication.currentAddress.zipCode,
+      },
+      tin: decrypt(cardApplication.ssid!),
     };
 
-    const result = await treasuryPrimeApiCall({
+    const response = await treasuryPrimeApiCall({
       req_type: "POST",
       url: "/apply/person_application",
       body: userApplication,
       userId: user_id,
     });
 
-    const response = await result?.json();
-    const data = response.data;
-
-    console.log(data);
-
+    const { status, message, data } = await response?.json();
+    console.log("Data: ", data);
     if (data.error) {
       console.log(data.error);
       return NextResponse.json({
         status: 500,
         message: data.error,
       });
-    }
-
-    if (data.id) {
-      await prisma.user.update({
-        where: {
-          id: user_id,
-        },
-        data: {
-          application_id: data.id,
-        },
+    } else {
+      if (data.id) {
+        await prisma.user.update({
+          where: {
+            id: cardApplication.user.id,
+          },
+          data: {
+            application_id: data.id,
+          },
+        });
+        const personApplication = await prisma.personApplication.create({
+          data: {
+            userId: cardApplication.user.id,
+            tp_person_id: data.id,
+            cardApplicationId: cardApplicationId,
+            first_name: userApplication.first_name,
+            last_name: userApplication.last_name,
+            email_address: userApplication.email_address,
+            citizenship: userApplication.citizenship,
+            date_of_birth: userApplication.date_of_birth,
+            phone_number: userApplication.phone_number,
+            physical_address_id: cardApplication.currentAddressId,
+          },
+        });
+      }
+      // if (data.id) {
+      //   await prisma.user.update({
+      //     where: {
+      //       id: user_id,
+      //     },
+      //     data: {
+      //       application_id: data.id,
+      //     },
+      //   });
+      // }
+      return NextResponse.json({
+        status: 200,
+        message: "Person Application created successfully",
       });
     }
-
-    return NextResponse.json({
-      status: 200,
-      message: "Person Application created successfully",
-    });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ status: 500, message: "An error occurred" });
