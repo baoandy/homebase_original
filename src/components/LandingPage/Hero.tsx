@@ -22,7 +22,7 @@ import { env } from "@/lib/env";
 
 export default async function Hero() {
   return (
-    <div className="relative flex min-h-[524px] w-[1336px] max-w-full flex-row items-start self-center overflow-hidden rounded-[32px] bg-gradient-to-r from-primary-rgba-20 via-white to-white px-16 pb-14 text-white shadow-md max-md:px-5">
+    <div className="z-1 relative flex min-h-[524px] w-[1336px] max-w-full flex-row items-start self-center overflow-hidden rounded-[32px] bg-gradient-to-r from-primary-rgba-20 via-white to-white px-16 pb-14 text-white shadow-md max-md:px-5">
       {/* left side */}
       <div className="flex w-[100%] flex-col justify-between gap-6 md:w-[50%]">
         <div className="">
