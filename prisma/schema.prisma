@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Waitlist {
-  id                    String    @id @default(uuid()) @db.Uuid
+  id                    String    @id @default(uuid()) @map("_id") @db.Uuid
   firstName             String
   lastName              String
   email                 String    @unique
@@ -32,7 +32,7 @@ model Waitlist {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
-  @@map("waitlist")
+  @@map("WaitList")
 }
 
 model User {

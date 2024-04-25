@@ -25,10 +25,9 @@ export default async function Home() {
       <Wallet />
       <Clientsay />
 
-      <DisplayWaitListButton
-        className="px-7"
-        apiSecretKey={env.API_SECRET_KEY}
-      />
+      <div className="flex flex-row justify-center">
+        <DisplayWaitListButton className="" apiSecretKey={env.API_SECRET_KEY} />
+      </div>
       <Faq />
       <Footer />
     </>
