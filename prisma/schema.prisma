@@ -32,7 +32,7 @@ model Waitlist {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
-  @@map("waitlist")
+  @@map("WaitList")
 }
 
 model User {
@@ -57,11 +57,11 @@ model User {
 
   application_id String? @unique
 
-  addresses       Address[]
-  Session         Session[]
-  tp_communications   tp_communications[]
-  CardApplication CardApplication?
-  AdminUser       AdminUser?
+  addresses         Address[]
+  Session           Session[]
+  tp_communications tp_communications[]
+  CardApplication   CardApplication?
+  AdminUser         AdminUser?
 
   @@map("user")
 }
@@ -220,16 +220,15 @@ enum addr_type {
   Mailing
 }
 
-
 model tp_communications {
-  id            String      @id @default(uuid()) @db.Uuid
-  userId        String?      @db.Uuid   // might be null if it's a system request not the user, like retreve all ...
-  method        String
-  url           String
-  request       Json?        //body, null for get
-  res_status    Int
-  responce      Json         //body
+  id         String  @id @default(uuid()) @db.Uuid
+  userId     String? @db.Uuid // might be null if it's a system request not the user, like retreve all ...
+  method     String
+  url        String
+  request    Json? //body, null for get
+  res_status Int
+  responce   Json //body
 
-  created_at    DateTime    @default(now())
-  user          User?      @relation(fields: [userId], references: [id])
+  created_at DateTime @default(now())
+  user       User?    @relation(fields: [userId], references: [id])
 }
