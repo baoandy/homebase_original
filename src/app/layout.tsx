@@ -43,7 +43,7 @@ export default async function RootLayout({
   }
   return (
     <html lang="en">
-      <body className="flex flex-col items-center bg-white px-4 pb-20">
+      <body className="flex flex-col items-center bg-white px-4 pb-4">
         <Header
           loggedInUser={loggedInUser}
           firstName={firstName}
@@ -51,7 +51,6 @@ export default async function RootLayout({
           signOut={SignOut}
         />
         <SessionProvider>{children}</SessionProvider>
-        <Footer />
       </body>
       <GoogleAnalytics gaId="AW-16530188072" />
     </html>
