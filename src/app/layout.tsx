@@ -56,7 +56,6 @@ export default async function RootLayout({
         <NoUserHeader />
 
         <SessionProvider>{children}</SessionProvider>
-        <Footer />
       </body>
       <GoogleAnalytics gaId="AW-16530188072" />
     </html>

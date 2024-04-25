@@ -1,21 +1,26 @@
 import { prisma } from "@/lib/db/prisma";
 import { NextResponse, NextRequest } from "next/server";
 import treasuryPrimeApiCall from "@/lib/helper/treasuryPrimeApiCall";
+import { env } from "@/lib/env";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   console.log(req.method, req.url);
   // basically creates an account application in treasuryprime
   // and adds account to our database
   try {
+    const secretKey = req.headers.get("secretKey");
+    if (secretKey !== env.API_SECRET_KEY) {
+      return NextResponse.json({ status: 403, message: "Unauthorized" });
+    }
     //   need to get product id from our database or TP and pass it here
-    const account_product = await prisma.accountProduct.findFirst({});
-
-    const body = await req.json();
-    const { user_id } = body;
-
+    const tp_checking = env.TREASURYPRIME_PERSONAL_CHECKINGS_PRODUCT_ID;
+    const tp_savings = env.TREASURYPRIME_PERSONAL_SAVINGS_PRODUCT_ID;
+    // const account_product = await prisma.accountProduct.findFirst({});
+    const { userId, cardApplicationId, accountType } = await req.json();
+    console.log("user id: ", userId);
     const userInfo = await prisma.user.findUnique({
       where: {
-        id: user_id,
+        id: userId,
       },
     });
 
@@ -37,7 +42,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     // we might want to limit the number of account applications per user to just one!
     // if so need to  check if Account application exists for the user, alos create @unique constraint in account model
     const accountApplication = {
-      account_product_id: account_product?.id,
+      account_product_id: accountType === "checking" ? tp_checking : tp_savings,
       primary_person_application_id,
     };
 
@@ -45,7 +50,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       req_type: "POST",
       url: "/apply/account_application",
       body: accountApplication,
-      userId: user_id,
+      userId: userInfo.id,
     });
 
     const response = await result?.json();
@@ -59,11 +64,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
       });
     }
 
-    data.userId = user_id;
+    data.userId = userInfo.id;
+    data.accountType = accountType;
     console.log(data);
 
-    await prisma.account.create({
-      data: data,
+    await prisma.accountApplication.create({
+      data: {
+        ...data,
+        accountType: accountType,
+      },
     });
 
     return NextResponse.json({

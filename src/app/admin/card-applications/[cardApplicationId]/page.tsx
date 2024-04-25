@@ -1,6 +1,13 @@
 "use server";
 import { prisma } from "@/lib/db/prisma";
 import Link from "next/link";
+import CreatePersonApplication from "./CreatePersonApplication";
+import CreateCheckingApplication from "./CreateCheckingAccount";
+import ApproveApplication from "./ApproveApplication";
+import { env } from "@/lib/env";
+import CreateSavingsApplication from "./CreateSavingsAccount";
+import RefreshAccountStatus from "./RefreshAccountStatus";
+import ActivateUser from "./ActivateUser";
 
 export default async function CardApplicationDetails({
   params,
@@ -16,6 +23,23 @@ export default async function CardApplicationDetails({
   if (!cardApplication) {
     return <div>Not Found</div>;
   }
+  const checkingAccount = await prisma.accountApplication.findFirst({
+    where: {
+      userId: cardApplication.userId,
+      accountType: "checking",
+    },
+  });
+  const savingsAccount = await prisma.accountApplication.findFirst({
+    where: {
+      userId: cardApplication.userId,
+      accountType: "savings",
+    },
+  });
+  const personApplication = await prisma.personApplication.findFirst({
+    where: {
+      userId: cardApplication.userId,
+    },
+  });
 
   return (
     <div className="flex-1 overflow-auto p-8">
@@ -137,6 +161,160 @@ export default async function CardApplicationDetails({
             </div>
           </div>
         )}
+
+        <div className="rounded-lg bg-white p-6 shadow lg:col-span-2">
+          <h2 className="mb-4 text-xl font-semibold">Actions</h2>
+          <div className="flex items-center justify-between">
+            {cardApplication.status === "SUBMITTED" && (
+              <ApproveApplication
+                userId={cardApplication.userId}
+                cardApplicationId={cardApplication.id}
+                apiSecretKey={env.API_SECRET_KEY}
+              />
+            )}
+            {cardApplication.status === "APPROVED" && !personApplication && (
+              <CreatePersonApplication
+                userId={cardApplication.userId}
+                cardApplicationId={cardApplication.id}
+                apiSecretKey={env.API_SECRET_KEY}
+              />
+            )}
+            {cardApplication.status === "APPROVED" &&
+              personApplication &&
+              !checkingAccount && (
+                <CreateCheckingApplication
+                  userId={cardApplication.userId}
+                  cardApplicationId={cardApplication.id}
+                  apiSecretKey={env.API_SECRET_KEY}
+                />
+              )}
+            {cardApplication.status === "APPROVED" &&
+              personApplication &&
+              !savingsAccount && (
+                <CreateSavingsApplication
+                  userId={cardApplication.userId}
+                  cardApplicationId={cardApplication.id}
+                  apiSecretKey={env.API_SECRET_KEY}
+                />
+              )}
+
+            {cardApplication.status === "SUBMITTED" && (
+              <button className="btn-danger btn">Reject</button>
+            )}
+            {cardApplication.status === "APPROVED" &&
+              cardApplication.user.userStatus === "Unauthorized" &&
+              personApplication &&
+              checkingAccount &&
+              savingsAccount && (
+                <ActivateUser
+                  userId={cardApplication.userId}
+                  apiSecretKey={env.API_SECRET_KEY}
+                />
+              )}
+          </div>
+        </div>
+        <div className="rounded-lg bg-white p-6 shadow lg:col-span-2">
+          <h2 className="mb-4 text-xl font-semibold">Aplications</h2>
+          <div className="flex flex-col items-start justify-between">
+            <table className="w-full text-left text-sm text-gray-500">
+              <thead className="bg-gray-50 text-xs uppercase text-gray-700">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    Application ID
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Application Type
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Created At
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Status
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* {}
+                {Array.from({
+                  length: 10,
+                }).map((_, index) => (
+                  <tr key={index} className="border-b bg-white">
+                    <td className="px-6 py-4">Plumbing</td>
+                    <td className="px-6 py-4">
+                      28/03/2024 (10:00 AM - 11:30 AM)
+                    </td>
+                    <td className="px-6 py-4">XYZ Plumbing Services</td>
+                    <td className="px-6 py-4">$150</td>
+                  </tr>
+                ))} */}
+                {personApplication && (
+                  <tr className="border-b bg-white">
+                    <td className="px-6 py-4">
+                      {personApplication.tp_person_id}
+                    </td>
+                    <td className="px-6 py-4">Person</td>
+                    <td className="px-6 py-4">
+                      {personApplication.created_at.toLocaleDateString()}{" "}
+                      {personApplication.created_at.toLocaleTimeString(
+                        "en-US",
+                        {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        },
+                      )}
+                    </td>
+                    <td className="px-6 py-4">Submitted</td>
+                  </tr>
+                )}
+                {checkingAccount && (
+                  <tr className="border-b bg-white">
+                    <td className="px-6 py-4">{checkingAccount.id}</td>
+                    <td className="px-6 py-4">Checking</td>
+                    <td className="px-6 py-4">
+                      {checkingAccount.created_at.toLocaleDateString()}{" "}
+                      {checkingAccount.created_at.toLocaleTimeString("en-US", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </td>
+                    <td className="px-6 py-4">{checkingAccount.status}</td>
+                    <td className="px-6 py-4">
+                      <RefreshAccountStatus
+                        userId={cardApplication.userId}
+                        account_id={checkingAccount.id}
+                        apiSecretKey={env.API_SECRET_KEY}
+                      />
+                    </td>
+                  </tr>
+                )}
+                {savingsAccount && (
+                  <tr className="border-b bg-white">
+                    <td className="px-6 py-4">{savingsAccount.id}</td>
+                    <td className="px-6 py-4">Savings</td>
+                    <td className="px-6 py-4">
+                      {savingsAccount.created_at.toLocaleDateString()}{" "}
+                      {savingsAccount.created_at.toLocaleTimeString("en-US", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </td>
+                    <td className="px-6 py-4">{savingsAccount.status}</td>
+                    <td className="px-6 py-4">
+                      <RefreshAccountStatus
+                        userId={cardApplication.userId}
+                        account_id={savingsAccount.id}
+                        apiSecretKey={env.API_SECRET_KEY}
+                      />
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );
