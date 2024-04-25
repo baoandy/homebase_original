@@ -18,7 +18,7 @@ export default function Banner() {
   }
 
   return (
-    <div className="relative flex w-full items-center gap-x-6 bg-primary px-6 py-4 sm:px-3.5 sm:before:flex-1">
+    <div className="relative flex w-screen items-center gap-x-6 bg-primary px-6 py-4 sm:px-3.5 sm:before:flex-1">
       <div className="absolute left-0 top-0 h-full w-1.5 animate-pulse bg-white"></div>
       <div className="flex items-center gap-x-4">
         <span className="animate-bounce rounded bg-white px-2 py-0.5 font-bold text-primary">

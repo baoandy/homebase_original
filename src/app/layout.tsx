@@ -45,7 +45,7 @@ export default async function RootLayout({
   }
   return (
     <html lang="en">
-      <body className="flex flex-col items-center bg-white pb-20">
+      <body className="flex flex-col items-center bg-white px-4 pb-20">
         <Banner />
         {/* <Header
           loggedInUser={loggedInUser}
@@ -53,12 +53,10 @@ export default async function RootLayout({
           lastName={lastName}
           signOut={SignOut}
         /> */}
-        <main className="px-4">
-          <NoUserHeader />
+        <NoUserHeader />
 
-          <SessionProvider>{children}</SessionProvider>
-          <Footer />
-        </main>
+        <SessionProvider>{children}</SessionProvider>
+        <Footer />
       </body>
       <GoogleAnalytics gaId="AW-16530188072" />
     </html>
