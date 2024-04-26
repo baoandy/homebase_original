@@ -15,6 +15,9 @@ const envSchema = zod.object({
 
   GOOGLE_PLACES_API_KEY: zod.string().min(1),
   SSID_SECRET: zod.string().min(1),
+
+  AUTH_GOOGLE_ID: zod.string().min(1),
+  AUTH_GOOGLE_SECRET: zod.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);
