@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const protectedPaths = ["/tp", "/login", "/dashboard", "/application"];
+  // const protectedPaths = ["/tp", "/login", "/dashboard", "/application"];
+  // switch between protectedPaths and unprotectedPaths for deployment
+  const protectedPaths: string[] = [];
 
   if (
     protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))

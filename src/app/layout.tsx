@@ -47,13 +47,14 @@ export default async function RootLayout({
     <html lang="en">
       <body className="flex flex-col items-center bg-white px-4 pb-20">
         <Banner />
-        {/* <Header
+        <Header
           loggedInUser={loggedInUser}
           firstName={firstName}
           lastName={lastName}
           signOut={SignOut}
-        /> */}
-        <NoUserHeader />
+        />
+        {/* Switch between header for deployment */}
+        {/* <NoUserHeader /> */}
 
         <SessionProvider>{children}</SessionProvider>
       </body>

@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   session: {
-    strategy: "jwt",
+    strategy: "database",
   },
   callbacks: {},
 });
