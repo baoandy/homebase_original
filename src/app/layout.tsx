@@ -53,6 +53,7 @@ export default async function RootLayout({
           lastName={lastName}
           signOut={SignOut}
         />
+        {/* Switch between header for deployment */}
         {/* <NoUserHeader /> */}
 
         <SessionProvider>{children}</SessionProvider>
