@@ -16,7 +16,7 @@ import Footer from "@/components/LandingPage/Footer";
 
 export default async function Home() {
   return (
-    <>
+    <main className="flex flex-col items-center bg-white px-4 pb-20">
       {/* <PageSEO title="Home page" /> this doesn't seem to change the title */}
       {/* <Header /> Moved this to Layout */}
       <Hero />
@@ -30,6 +30,6 @@ export default async function Home() {
       </div>
       <Faq />
       <Footer />
-    </>
+    </main>
   );
 }
