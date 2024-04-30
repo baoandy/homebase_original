@@ -45,7 +45,7 @@ export default async function RootLayout({
       firstName = user.first_name ? user.first_name : "";
       lastName = user.last_name ? user.last_name : "";
       email = session.user.email ? session.user.email : "";
-      name = user.account ? user.name : `${firstName} ${lastName}`;
+      name = user.account && user.name ? user.name : `${firstName} ${lastName}`;
     }
   }
   return (
