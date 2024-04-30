@@ -1,8 +1,10 @@
 "use client";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Banner() {
+  const path = usePathname();
   const [isBannerVisible, setIsBannerVisible] = useState(true);
 
   //   useEffect(() => {
@@ -13,7 +15,7 @@ export default function Banner() {
   //     return () => clearTimeout(timer);
   //   }, []);
 
-  if (!isBannerVisible) {
+  if (path !== "/") {
     return null;
   }
 
