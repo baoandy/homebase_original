@@ -15,14 +15,13 @@ import { sign } from "crypto";
 
 interface HeaderProps {
   loggedInUser: boolean;
-  firstName: string;
-  lastName: string;
+  name: string;
   signOut: () => Promise<void>;
 }
 
 interface ProfileButtonProps {
-  firstName: string | null | undefined;
-  lastName: string | null | undefined;
+  name: string | null | undefined;
+
   signOut: () => Promise<void>;
 }
 
@@ -30,7 +29,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-function ProfileButton({ firstName, lastName, signOut }: ProfileButtonProps) {
+function ProfileButton({ name, signOut }: ProfileButtonProps) {
   const router = useRouter();
   async function handleSignOut() {
     await signOut();
@@ -39,7 +38,7 @@ function ProfileButton({ firstName, lastName, signOut }: ProfileButtonProps) {
     <Menu as="div" className="relative z-50 inline-block text-left">
       <div className="z-50">
         <Menu.Button className="z-50 inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900  hover:bg-gray-50">
-          {firstName} {lastName}
+          {name}
           <ChevronDownIcon
             className="-mr-1 h-5 w-5 text-gray-400"
             aria-hidden="true"
@@ -95,12 +94,7 @@ function ProfileButton({ firstName, lastName, signOut }: ProfileButtonProps) {
   );
 }
 
-export default function Header({
-  loggedInUser,
-  firstName,
-  lastName,
-  signOut,
-}: HeaderProps) {
+export default function Header({ loggedInUser, name, signOut }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const currentPath = usePathname();
 
@@ -119,11 +113,7 @@ export default function Header({
       {loggedInUser && (
         <div className="hidden gap-4 whitespace-nowrap font-semibold md:flex">
           <div className="relative flex items-center justify-center">
-            <ProfileButton
-              firstName={firstName}
-              lastName={lastName}
-              signOut={signOut}
-            />
+            <ProfileButton name={name} signOut={signOut} />
           </div>
         </div>
       )}

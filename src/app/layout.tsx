@@ -31,28 +31,28 @@ export default async function RootLayout({
   let firstName = "";
   let lastName = "";
   let email = "";
+  let name = "";
   const session = await auth();
   if (session && session.user?.email) {
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
+      include: {
+        account: true,
+      },
     });
     if (user) {
       loggedInUser = true;
       firstName = user.first_name ? user.first_name : "";
       lastName = user.last_name ? user.last_name : "";
       email = session.user.email ? session.user.email : "";
+      name = user.account ? user.name : `${firstName} ${lastName}`;
     }
   }
   return (
     <html lang="en">
       <body className="flex flex-col items-center bg-white px-4 pb-20">
         <Banner />
-        <Header
-          loggedInUser={loggedInUser}
-          firstName={firstName}
-          lastName={lastName}
-          signOut={SignOut}
-        />
+        <Header loggedInUser={loggedInUser} name={name} signOut={SignOut} />
         {/* Switch between header for deployment */}
         {/* <NoUserHeader /> */}
 
