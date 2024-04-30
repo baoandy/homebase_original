@@ -65,6 +65,13 @@ model User {
   AdminUser         AdminUser?
   PersonApplication PersonApplication[]
 
+  vendorId       String
+  Vendor          Vendor @relation(fields:[vendorId], references:[id])
+  VendorAdmins    VendorAdmins? 
+  FICO            FICO?
+  DebtAccounts    DebtAccounts[]
+  UserDependants  UserDependants[]
+
   @@map("user")
 }
 
@@ -171,6 +178,9 @@ model Address {
   mortgageAddress   CardApplication[]   @relation("MortgageAddress")
   personApplication PersonApplication[]
 
+  MortgageProperty    MortgageProperty?
+  PropertyData        PropertyData?
+
   @@map("address")
 }
 
@@ -275,4 +285,110 @@ model tp_communications {
 
   created_at DateTime @default(now())
   user       User?    @relation(fields: [userId], references: [id])
+}
+
+// 
+model Vendor {
+    id                String  @id @default(uuid()) //@db.Uuid
+    CompanyName       String
+    PhoneNumber       String
+    Website           String?
+    Industry          String?
+    CompanyDetails    String?
+    User              User[]
+    VendorAdmins      VendorAdmins[]
+
+    createdAt DateTime @default(now()) // when we check the score
+    updatedAt DateTime @updatedAt
+ }
+
+ model VendorAdmins{
+    userId    String  @unique
+    vendorId  String
+
+    Vendor    Vendor  @relation (fields:[vendorId], references:[id])
+    User      User    @relation (fields:[userId] , references:[id])
+ }
+
+model FICO {
+  // this table can surve as history, then need to make relation many to 1 user
+  id              String  @id @default(uuid()) //@db.Uuid
+  userId          String  @unique
+  User            User    @relation (fields:[userId] , references:[id])
+
+  score           Int
+  createdAt DateTime @default(now()) // when we check the score
+  updatedAt DateTime @updatedAt
+  
+
+}
+
+model DebtAccounts{
+  id                String  @id @default(uuid()) //@db.Uuid
+  userId            String
+  User              User    @relation (fields:[userId] , references:[id])
+  AccountType       String
+  CoBorrower        String?
+  InterestRate      Int? //Decimal
+  OutstandingDebt   Int? //Decimal 
+  MonthlyPayment    Int? //Decimal 
+  MinimumPay        Int? //Decimal 
+  DateAccountOpened Int? //Decimal
+  LimitUsage        Int? //Decimal     // percent?
+  InterestCharged   Int? //Decimal     // percent?
+  AccountStanding   String?
+  PaymentHistory    Int? //Decimal     // percent ?
+
+  createdAt DateTime @default(now()) // when we check the score
+  updatedAt DateTime @updatedAt
+}
+
+model MortgageProperty {
+  id                String    @id @default(uuid()) //@db.Uuid
+  addressId         String    @unique
+  Address           Address   @relation(fields:[addressId], references:[id])
+
+  LoanAmount        Int  //Decimal
+  AmountPaidOff     Int? //Decimal
+  HomeEquity        Int? //Decimal
+  InterestRate      Int? //Decimal
+
+  createdAt DateTime @default(now()) // when we check the score
+  updatedAt DateTime @updatedAt
+
+}
+
+model PropertyData {
+  id                String    @id @default(uuid()) //@db.Uuid 
+  addressId         String    @unique
+  Address           Address   @relation(fields:[addressId], references:[id])
+  
+  HomeType          String
+  YearBuilt         String?
+  LotSize           String?
+  LastRemodel       String?
+  LiveableSpace     String?
+  ParkingSpace      String?
+  PropertyFeatures  String?
+
+  Bedrooms          Int?
+  Bathrooms         Int? // Decimal
+  Garage            Boolean? 
+  Driveway          String?
+  Pool_Jacuzzi      Boolean?
+  Appliances        Json?
+  Fireplace         Boolean?
+  Floors            String?
+
+
+}
+
+model UserDependants {
+  id                String  @id @default(uuid()) //@db.Uuid
+  userId            String
+  User              User    @relation (fields:[userId] , references:[id])
+
+  RelationToUser    String
+  Age               Int?
+  Gender            String?
 }
