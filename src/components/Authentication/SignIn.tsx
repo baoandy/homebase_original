@@ -24,6 +24,9 @@ export function SignIn() {
       <div className="mb-4 flex justify-center">
         <Mail className="h-6 w-6 text-primary" />
       </div>
+      <div className="mb-4 flex justify-center">
+        <h1 className="text-xl font-semibold">Sign In</h1>
+      </div>
 
       <Controller
         name="email"
@@ -57,7 +60,7 @@ export function SignIn() {
       />
       <button
         type="submit"
-        className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+        className="my-4 w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
       >
         Submit
       </button>

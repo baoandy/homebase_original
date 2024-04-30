@@ -18,6 +18,8 @@ const envSchema = zod.object({
   TWILIO_ACCOUNT_SID: zod.string().min(1),
   TWILIO_AUTH_TOKEN: zod.string().min(1),
   TWILIO_SMS_SID: zod.string().min(1),
+  AUTH_GOOGLE_ID: zod.string().min(1),
+  AUTH_GOOGLE_SECRET: zod.string().min(1),
 
 });
 
