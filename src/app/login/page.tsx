@@ -6,6 +6,7 @@ import { prisma } from "@/lib/db/prisma";
 import { Sign } from "crypto";
 import { redirect } from "next/navigation";
 import { signOut } from "@/auth";
+import { GoogleSignIn } from "@/components/Authentication/GoogleSignIn";
 
 export default async function Application() {
   const session = await auth();
@@ -33,9 +34,14 @@ export default async function Application() {
   let cardApplicationId = "";
 
   return (
-    <div>
-      <h1>Login</h1>
-      {!session && <SignIn />}
+    <div className="">
+      {!session && (
+        <>
+          <SignIn />
+          <div className="divider text-sm">Or Continue With</div>
+          <GoogleSignIn redirectTo="/credit-card/home" />
+        </>
+      )}
     </div>
   );
 }
