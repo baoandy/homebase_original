@@ -1,5 +1,5 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { LucideIcon, HomeIcon, Coins } from "lucide-react";
 
@@ -35,6 +35,7 @@ export default function SideBarLinks() {
   const svgDefault = "h-6 w-6 shrink-0";
   const svgActive = "text-white" + " " + svgDefault;
   const svgHover = "text-white group-hover:text-white" + " " + svgDefault;
+  const router = useRouter();
   return (
     <ul role="list" className="flex flex-1 flex-col gap-y-7">
       <li>
