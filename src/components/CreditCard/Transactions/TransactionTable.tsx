@@ -95,7 +95,7 @@ export default function TransactionTable({
       }
     }
     updateDisplayTransactions();
-  }, [transactions, maxStatementDate, filter]);
+  }, [filter]);
 
   return (
     <div>
