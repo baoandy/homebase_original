@@ -116,13 +116,13 @@ const PartnersCarousel: React.FC = () => {
           programs, or redeemed for gift cards from our merchant partners.
         </p>
       </div>
-      <div className="hover:pause flex h-14 animate-slide gap-16 whitespace-nowrap">
+      <div className="hover:pause flex animate-slide gap-16 whitespace-nowrap">
         {partnerImgs.concat(partnerImgs).map((img, index) => (
           <Image
             key={index}
             src={img}
             alt={`Partner ${index + 1}`}
-            className="h-3/4"
+            height={56}
           />
         ))}
       </div>
