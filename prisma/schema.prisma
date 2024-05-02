@@ -72,10 +72,10 @@ model User {
   VendorAdmins VendorAdmins?
 
   userDependents      UserDependents[]
-  ficoScoreHistory    FicoScoreHistory[]
   revolvingAccounts   RevolvingAccounts[]
   installmentAccounts InstallmentAccounts[]
   Inquiries           Inquiries[]
+  creditReports       CreditReport[]
 
   @@map("user")
 }
@@ -323,23 +323,52 @@ model VendorAdmins {
   @@map("vendor_admins")
 }
 
-model FicoScoreHistory {
-  id     String @id @default(uuid()) //@db.Uuid
-  userId String
-  User   User   @relation(fields: [userId], references: [id])
+model CreditReport {
+  id             String @id @default(uuid()) @db.Uuid
+  userId         String @db.Uuid
+  User           User   @relation(fields: [userId], references: [id])
+  reportProvider String
+  pulledOn       String
 
-  score     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("fico_score_history")
+  ficoScore              Int
+  name                   String
+  alsoKnownAs            String
+  generationalIdentifier String
+  yearOfBirth            String
+
+  revolvingAccounts   RevolvingAccounts[]
+  installmentAccounts InstallmentAccounts[]
+  addresses           CreditReportAddresses[]
+
+  @@map("credit_reports")
+}
+
+model CreditReportAddresses {
+  id             String       @id @default(uuid()) @db.Uuid
+  creditReportId String       @db.Uuid
+  CreditReport   CreditReport @relation(fields: [creditReportId], references: [id])
+
+  addressType String
+  street      String
+  city        String
+  state       String
+  zipCode     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("credit_report_addresses")
 }
 
 model RevolvingAccounts {
-  id     String @id @default(uuid()) @db.Uuid
-  userId String @unique
-  User   User   @relation(fields: [userId], references: [id])
-
+  id             String       @id @default(uuid()) @db.Uuid
+  userId         String       @db.Uuid
+  User           User         @relation(fields: [userId], references: [id])
+  creditReportId String       @db.Uuid
+  CreditReport   CreditReport @relation(fields: [creditReportId], references: [id])
   creditor       String
   balance        Float
   balanceUpdated String
@@ -387,9 +416,11 @@ model RevolvingAccountPaymentHistory {
 }
 
 model InstallmentAccounts {
-  id     String @id @default(uuid()) @db.Uuid
-  userId String @unique
-  User   User   @relation(fields: [userId], references: [id])
+  id             String       @id @default(uuid()) @db.Uuid
+  userId         String       @db.Uuid
+  User           User         @relation(fields: [userId], references: [id])
+  creditReportId String       @db.Uuid
+  CreditReport   CreditReport @relation(fields: [creditReportId], references: [id])
 
   creditor        String
   loanType        String
@@ -440,7 +471,7 @@ model InstallmentLoanPaymentHistory {
 
 model Inquiries {
   id     String @id @default(uuid()) //@db.Uuid
-  userId String
+  userId String @db.Uuid
   User   User   @relation(fields: [userId], references: [id])
 
   creditor     String
@@ -457,8 +488,8 @@ model Inquiries {
 // model PublicRecords {}
 
 model MortgageProperty {
-  id        String  @id @default(uuid()) //@db.Uuid
-  addressId String  @unique
+  id        String  @id @default(uuid()) @db.Uuid
+  addressId String  @unique @db.Uuid
   Address   Address @relation(fields: [addressId], references: [id])
 
   LoanAmount    Int //Decimal
@@ -499,8 +530,8 @@ model PropertyData {
 }
 
 model UserDependents {
-  id     String @id @default(uuid()) //@db.Uuid
-  userId String
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
   User   User   @relation(fields: [userId], references: [id])
 
   relationToUser String
