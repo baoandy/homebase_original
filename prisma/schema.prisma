@@ -67,12 +67,15 @@ model User {
   PersonApplication PersonApplication[]
   Account           Account?
 
-  vendorId       String
-  Vendor          Vendor @relation(fields:[vendorId], references:[id])
-  VendorAdmins    VendorAdmins? 
-  FICO            FICO?
-  DebtAccounts    DebtAccounts[]
-  UserDependants  UserDependants[]
+  vendorId     String?
+  Vendor       Vendor?       @relation(fields: [vendorId], references: [id])
+  VendorAdmins VendorAdmins?
+
+  userDependents      UserDependents[]
+  ficoScoreHistory    FicoScoreHistory[]
+  revolvingAccounts   RevolvingAccounts[]
+  installmentAccounts InstallmentAccounts[]
+  Inquiries           Inquiries[]
 
   @@map("user")
 }
@@ -180,8 +183,8 @@ model Address {
   mortgageAddress   CardApplication[]   @relation("MortgageAddress")
   personApplication PersonApplication[]
 
-  MortgageProperty    MortgageProperty?
-  PropertyData        PropertyData?
+  MortgageProperty MortgageProperty?
+  PropertyData     PropertyData?
 
   @@map("address")
 }
@@ -291,106 +294,255 @@ model tp_communications {
 
 // 
 model Vendor {
-    id                String  @id @default(uuid()) //@db.Uuid
-    CompanyName       String
-    PhoneNumber       String
-    Website           String?
-    Industry          String?
-    CompanyDetails    String?
-    User              User[]
-    VendorAdmins      VendorAdmins[]
-
-    createdAt DateTime @default(now()) // when we check the score
-    updatedAt DateTime @updatedAt
- }
-
- model VendorAdmins{
-    userId    String  @unique
-    vendorId  String
-
-    Vendor    Vendor  @relation (fields:[vendorId], references:[id])
-    User      User    @relation (fields:[userId] , references:[id])
- }
-
-model FICO {
-  // this table can surve as history, then need to make relation many to 1 user
-  id              String  @id @default(uuid()) //@db.Uuid
-  userId          String  @unique
-  User            User    @relation (fields:[userId] , references:[id])
-
-  score           Int
-  createdAt DateTime @default(now()) // when we check the score
-  updatedAt DateTime @updatedAt
-  
-
-}
-
-model DebtAccounts{
-  id                String  @id @default(uuid()) //@db.Uuid
-  userId            String
-  User              User    @relation (fields:[userId] , references:[id])
-  AccountType       String
-  CoBorrower        String?
-  InterestRate      Int? //Decimal
-  OutstandingDebt   Int? //Decimal 
-  MonthlyPayment    Int? //Decimal 
-  MinimumPay        Int? //Decimal 
-  DateAccountOpened Int? //Decimal
-  LimitUsage        Int? //Decimal     // percent?
-  InterestCharged   Int? //Decimal     // percent?
-  AccountStanding   String?
-  PaymentHistory    Int? //Decimal     // percent ?
+  id             String         @id @default(uuid()) //@db.Uuid
+  CompanyName    String
+  PhoneNumber    String
+  Website        String?
+  Industry       String?
+  CompanyDetails String?
+  User           User[]
+  VendorAdmins   VendorAdmins[]
 
   createdAt DateTime @default(now()) // when we check the score
   updatedAt DateTime @updatedAt
+
+  @@map("vendor")
 }
+
+model VendorAdmins {
+  id       String @id @default(uuid()) @db.Uuid
+  userId   String @unique @db.Uuid
+  vendorId String
+
+  Vendor Vendor @relation(fields: [vendorId], references: [id])
+  User   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("vendor_admins")
+}
+
+model FicoScoreHistory {
+  id     String @id @default(uuid()) //@db.Uuid
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+
+  score     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("fico_score_history")
+}
+
+model RevolvingAccounts {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @unique
+  User   User   @relation(fields: [userId], references: [id])
+
+  creditor       String
+  balance        Float
+  balanceUpdated String
+  creditLimit    Float
+  creditUsage    Float
+
+  accountNumber    String
+  openClosedStatus String
+  dateOpened       String
+  accountType      String
+
+  accountStatus   String
+  statusUpdated   String
+  highestBalance  Float
+  monthlyPayment  Float
+  lastPaymentDate String
+
+  responsibility   String
+  terms            String
+  companySold      String
+  originalCreditor String
+  comments         String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  paymentHistory RevolvingAccountPaymentHistory[]
+
+  @@map("revolving_accounts")
+}
+
+model RevolvingAccountPaymentHistory {
+  id                 String @id @default(uuid()) @db.Uuid
+  revolvingAccountId String @db.Uuid
+
+  period        String
+  paymentStatus String
+
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  RevolvingAccounts   RevolvingAccounts? @relation(fields: [revolvingAccountsId], references: [id])
+  revolvingAccountsId String?            @db.Uuid
+
+  @@map("revolving_account_payment_history")
+}
+
+model InstallmentAccounts {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @unique
+  User   User   @relation(fields: [userId], references: [id])
+
+  creditor        String
+  loanType        String
+  balance         Float
+  balanceUpdated  String
+  originalBalance Float
+  paidOffPercent  Float
+
+  accountNumber    String
+  openClosedStatus String
+  dateOpened       String
+  accountType      String
+
+  accountStatus   String
+  statusUpdated   String
+  monthlyPayment  Float
+  lastPaymentDate String
+
+  responsibility   String
+  terms            String
+  companySold      String
+  originalCreditor String
+  comments         String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  paymentHistory InstallmentLoanPaymentHistory[]
+
+  @@map("installment_accounts")
+}
+
+model InstallmentLoanPaymentHistory {
+  id                   String              @id @default(uuid()) @db.Uuid
+  installmentAccountId String              @db.Uuid
+  installmentAccount   InstallmentAccounts @relation(fields: [installmentAccountId], references: [id])
+
+  period        String
+  paymentStatus String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("installment_account_payment_history")
+}
+
+// model Collections {}
+
+model Inquiries {
+  id     String @id @default(uuid()) //@db.Uuid
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+
+  creditor     String
+  inquiryDate  String
+  removalDate  String
+  businessType String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("inquiries")
+}
+
+// model PublicRecords {}
 
 model MortgageProperty {
-  id                String    @id @default(uuid()) //@db.Uuid
-  addressId         String    @unique
-  Address           Address   @relation(fields:[addressId], references:[id])
+  id        String  @id @default(uuid()) //@db.Uuid
+  addressId String  @unique
+  Address   Address @relation(fields: [addressId], references: [id])
 
-  LoanAmount        Int  //Decimal
-  AmountPaidOff     Int? //Decimal
-  HomeEquity        Int? //Decimal
-  InterestRate      Int? //Decimal
+  LoanAmount    Int //Decimal
+  AmountPaidOff Int? //Decimal
+  HomeEquity    Int? //Decimal
+  InterestRate  Int? //Decimal
 
   createdAt DateTime @default(now()) // when we check the score
   updatedAt DateTime @updatedAt
-
 }
 
 model PropertyData {
-  id                String    @id @default(uuid()) //@db.Uuid 
-  addressId         String    @unique
-  Address           Address   @relation(fields:[addressId], references:[id])
-  
-  HomeType          String
-  YearBuilt         String?
-  LotSize           String?
-  LastRemodel       String?
-  LiveableSpace     String?
-  ParkingSpace      String?
-  PropertyFeatures  String?
+  id        String  @id @default(uuid()) @db.Uuid
+  addressId String  @unique @db.Uuid
+  Address   Address @relation(fields: [addressId], references: [id])
 
-  Bedrooms          Int?
-  Bathrooms         Int? // Decimal
-  Garage            Boolean? 
-  Driveway          String?
-  Pool_Jacuzzi      Boolean?
-  Appliances        Json?
-  Fireplace         Boolean?
-  Floors            String?
+  homeType         String
+  yearBuilt        String?
+  lotSize          String?
+  lastRemodel      String?
+  liveableSpace    String?
+  parkingSpace     String?
+  propertyFeatures String?
 
+  bedrooms     Int?
+  bathrooms    Int? // Decimal
+  garage       Boolean?
+  driveway     String?
+  pool_Jacuzzi Boolean?
+  appliances   Json?
+  fireplace    Boolean?
+  floors       String?
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("property_data")
 }
 
-model UserDependants {
-  id                String  @id @default(uuid()) //@db.Uuid
-  userId            String
-  User              User    @relation (fields:[userId] , references:[id])
+model UserDependents {
+  id     String @id @default(uuid()) //@db.Uuid
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
 
-  RelationToUser    String
-  Age               Int?
-  Gender            String?
+  relationToUser String
+  age            Int?
+  gender         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_dependents")
+}
+
+model RentCastPropertyData {
+  id               String   @id @default(uuid()) @db.Uuid
+  rentCastId       String
+  formattedAddress String
+  addressLine1     String
+  addressLine2     String
+  city             String
+  zipCode          String
+  county           String
+  latitude         Float
+  longitude        Float
+  propertyType     String
+  bedrooms         Int
+  bathrooms        Int
+  squareFootage    Int
+  lotSize          Int
+  yearBuilt        Int
+  assessorId       String
+  legalDescription String
+  subdivision      String
+  zoning           String
+  lastSaleDate     DateTime
+  lastSalePrice    Float
+  taxAssessments   Json
+  propertyTaxes    Json
+  owner            Json
+  ownerOccupied    Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("rent_cast_address_data")
 }
