@@ -8,6 +8,7 @@ import { env } from "@/lib/env";
 import CreateSavingsApplication from "./CreateSavingsAccount";
 import RefreshAccountStatus from "./RefreshAccountStatus";
 import ActivateUser from "./ActivateUser";
+import RentCastGetProperty from "@/components/PropertyActions/RentCastGetProperty";
 
 export default async function CardApplicationDetails({
   params,
@@ -124,6 +125,12 @@ export default async function CardApplicationDetails({
                   {cardApplication.currentAddress.zipCode}
                 </span>
               </div>
+            </div>
+            <div>
+              <RentCastGetProperty
+                addressId={cardApplication.currentAddress.id}
+                apiSecretKey={env.API_SECRET_KEY}
+              />
             </div>
           </div>
         )}
