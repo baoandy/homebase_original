@@ -21,6 +21,7 @@ const envSchema = zod.object({
   AUTH_GOOGLE_ID: zod.string().min(1),
   AUTH_GOOGLE_SECRET: zod.string().min(1),
 
+  RENTCAST_API_KEY: zod.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);

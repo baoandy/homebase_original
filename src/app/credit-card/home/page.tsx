@@ -3,7 +3,7 @@
 export default async function CreditCardHome() {
   return (
     <div>
-      <h1>Credit Card Home</h1>
+      <h1>Your HomeBase</h1>
     </div>
   );
 }
