@@ -47,7 +47,7 @@ model User {
   phone_number  String?
   image         String?
   userStatus    userStatus    @default(Unauthorized)
-  address       userAddress[]
+  // address       userAddress[]
 
   citizenship citizen @default(US)
   tin         String?
@@ -218,20 +218,20 @@ model PersonApplication {
   @@map("person_applications")
 }
 
-model userAddress {
-  id            String    @id @default(uuid()) @db.Uuid
-  userId        String    @db.Uuid
-  address_type  addr_type @default(Physical)
-  street_line_1 String
-  street_line_2 String?
-  city          String
-  state         String
-  postal_code   String
-  country       String
-  user          User      @relation(fields: [userId], references: [id])
+// model userAddress {
+//   id            String    @id @default(uuid()) @db.Uuid
+//   userId        String    @db.Uuid
+//   address_type  addr_type @default(Physical)
+//   street_line_1 String
+//   street_line_2 String?
+//   city          String
+//   state         String
+//   postal_code   String
+//   country       String
+//   user          User      @relation(fields: [userId], references: [id])
 
-  @@unique([userId, address_type])
-}
+//   @@unique([userId, address_type])
+// }
 
 model accountProduct {
   id                 String               @unique
