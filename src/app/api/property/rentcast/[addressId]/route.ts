@@ -40,9 +40,48 @@ export async function GET(
     const data = await response.json();
     if (data) {
       const propData = data[0];
-      // const rentCastProperty = await prisma.rentCastProperty.create({})
+      const savedProperty = await prisma.rentCastPropertyData.create({
+        data: {
+          addressId: propData.addressId,
+          rentCastId: propData.id,
+          formattedAddress: propData.formattedAddress,
+          addressLine1: propData.addressLine1,
+          addressLine2: propData.addressLine2,
+          city: propData.city,
+          state: propData.state,
+          zipCode: propData.zipCode,
+          county: propData.county,
+          latitude: propData.latitude,
+          longitude: propData.longitude,
+          propertyType: propData.propertyType,
+          bedrooms: propData.bedrooms,
+          bathrooms: propData.bathrooms,
+          squareFootage: propData.squareFootage,
+          lotSize: propData.lotSize,
+          yearBuilt: propData.yearBuilt,
+          assessorId: propData.assessorId,
+          legalDescription: propData.legalDescription,
+          subdivision: propData.subdivision,
+          zoning: propData.zoning,
+          lastSaleDate: propData.lastSaleDate,
+          lastSalePrice: propData.lastSalePrice,
+          features: propData.features,
+          taxAssessments: propData.taxAssessments,
+          propertyTaxes: propData.propertyTaxes,
+          owner: propData.owner,
+          ownerOccupied: propData.ownerOccupied,
+        },
+      });
+      return NextResponse.json({
+        status: 200,
+        message: "Property data saved",
+        data: savedProperty,
+      });
     }
-    return NextResponse.json(data);
+    return NextResponse.json({
+      status: 404,
+      message: "Property not found",
+    });
   } catch (error) {
     console.log(error);
     return NextResponse.json({

@@ -183,8 +183,9 @@ model Address {
   mortgageAddress   CardApplication[]   @relation("MortgageAddress")
   personApplication PersonApplication[]
 
-  MortgageProperty MortgageProperty?
-  PropertyData     PropertyData?
+  MortgageProperty     MortgageProperty?
+  PropertyData         PropertyData?
+  RentCastPropertyData RentCastPropertyData?
 
   @@map("address")
 }
@@ -546,11 +547,14 @@ model UserDependents {
 
 model RentCastPropertyData {
   id               String   @id @default(uuid()) @db.Uuid
+  addressId        String   @unique @db.Uuid
+  Address          Address  @relation(fields: [addressId], references: [id])
   rentCastId       String
   formattedAddress String
   addressLine1     String
   addressLine2     String
   city             String
+  state            String
   zipCode          String
   county           String
   latitude         Float
@@ -567,6 +571,7 @@ model RentCastPropertyData {
   zoning           String
   lastSaleDate     DateTime
   lastSalePrice    Float
+  features         Json
   taxAssessments   Json
   propertyTaxes    Json
   owner            Json
