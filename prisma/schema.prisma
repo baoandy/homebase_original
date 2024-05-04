@@ -36,9 +36,9 @@ model Waitlist {
 }
 
 model User {
-  id            String        @id @default(uuid()) @db.Uuid
+  id            String     @id @default(uuid()) @db.Uuid
   name          String?
-  email         String        @unique
+  email         String     @unique
   emailVerified DateTime?
   password      String?
   first_name    String?
@@ -46,7 +46,7 @@ model User {
   date_of_birth String?
   phone_number  String?
   image         String?
-  userStatus    userStatus    @default(Unauthorized)
+  userStatus    userStatus @default(Unauthorized)
   // address       userAddress[]
 
   citizenship citizen @default(US)
@@ -185,7 +185,7 @@ model Address {
 
   MortgageProperty     MortgageProperty?
   PropertyData         PropertyData?
-  RentCastPropertyData RentCastPropertyData?
+  rentCastPropertyData RentCastPropertyData[]
 
   @@map("address")
 }
@@ -547,12 +547,12 @@ model UserDependents {
 
 model RentCastPropertyData {
   id               String   @id @default(uuid()) @db.Uuid
-  addressId        String   @unique @db.Uuid
+  addressId        String   @db.Uuid
   Address          Address  @relation(fields: [addressId], references: [id])
   rentCastId       String
   formattedAddress String
   addressLine1     String
-  addressLine2     String
+  addressLine2     String?
   city             String
   state            String
   zipCode          String
@@ -565,7 +565,7 @@ model RentCastPropertyData {
   squareFootage    Int
   lotSize          Int
   yearBuilt        Int
-  assessorId       String
+  assessorId       String?
   legalDescription String
   subdivision      String
   zoning           String
