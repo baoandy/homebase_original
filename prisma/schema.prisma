@@ -183,9 +183,10 @@ model Address {
   mortgageAddress   CardApplication[]   @relation("MortgageAddress")
   personApplication PersonApplication[]
 
-  MortgageProperty     MortgageProperty?
-  PropertyData         PropertyData?
-  rentCastPropertyData RentCastPropertyData[]
+  MortgageProperty      MortgageProperty?
+  PropertyData          PropertyData?
+  rentCastPropertyData  RentCastPropertyData[]
+  rentCastPropertyValue RentCastPropertyValue[]
 
   @@map("address")
 }
@@ -581,4 +582,21 @@ model RentCastPropertyData {
   updatedAt DateTime @updatedAt
 
   @@map("rent_cast_address_data")
+}
+
+model RentCastPropertyValue {
+  id             String  @id @default(uuid()) @db.Uuid
+  addressId      String  @db.Uuid
+  Address        Address @relation(fields: [addressId], references: [id])
+  price          Float
+  priceRangeLow  Float
+  priceRangeHigh Float
+  latitude       Float
+  longitude      Float
+  comparables    Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("rent_cast_property_value")
 }
