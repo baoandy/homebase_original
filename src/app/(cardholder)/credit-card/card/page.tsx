@@ -129,6 +129,28 @@ export default function Example() {
   return (
     <>
       <main>
+        <div className="flex w-full items-center gap-x-6 bg-primary py-4 sm:px-3.5 sm:before:flex-1">
+          <div className="absolute left-0 top-0 h-full  animate-pulse bg-white"></div>
+          <div className="mx-auto flex w-full items-center justify-center gap-x-4">
+            <span className="animate-bounce rounded bg-white px-2 py-0.5 font-bold text-primary">
+              Congrats!
+            </span>
+            <p className="text-sm leading-6 text-white">
+              <a href="#">
+                <strong className="font-semibold">HomeBase</strong>
+                <svg
+                  viewBox="0 0 2 2"
+                  className="mx-2 inline h-0.5 w-0.5 fill-current"
+                  aria-hidden="true"
+                >
+                  <circle cx={1} cy={1} r={1} />
+                </svg>
+                You Earned 1,000 Points in April!
+              </a>
+            </p>
+          </div>
+          <div className="flex flex-1 justify-end"></div>
+        </div>
         <header className="relative isolate pt-16">
           <div
             className="absolute inset-0 -z-10 overflow-hidden"
