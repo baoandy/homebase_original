@@ -145,7 +145,7 @@ export default function TransactionTable({
           </select>
         )}
         {showOnlyRecent && (
-          <div className="rounded-r-md bg-white px-2 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
+          <div className="text-md rounded-r-md bg-white px-2 py-2 font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
             Recent Activity
           </div>
         )}
@@ -217,7 +217,7 @@ function Pagination({
           </button>
         </li>
         <li>
-          <span className="border border-gray-300 bg-white px-4 py-2">
+          <span className="border border-gray-300 bg-white px-4 py-2 text-sm">
             {currentPage} / {totalPages}
           </span>
         </li>
