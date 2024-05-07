@@ -15,13 +15,13 @@ const config: Config = {
         "primary-rgba-20": "rgba(54, 104, 113, 0.2)",
       },
       animation: {
-        slide: 'slide 150s linear infinite',
+        slide: "slide 150s linear infinite",
       },
       keyframes: {
         slide: {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-100%)' },
-        }
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
       },
     },
   },
