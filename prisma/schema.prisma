@@ -588,7 +588,7 @@ model RentCastPropertyValue {
   id             String  @id @default(uuid()) @db.Uuid
   addressId      String  @db.Uuid
   Address        Address @relation(fields: [addressId], references: [id])
-  price          Float
+  price          Float?
   priceRangeLow  Float
   priceRangeHigh Float
   latitude       Float

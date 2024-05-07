@@ -9,6 +9,7 @@ import CreateSavingsApplication from "./CreateSavingsAccount";
 import RefreshAccountStatus from "./RefreshAccountStatus";
 import ActivateUser from "./ActivateUser";
 import RentCastGetProperty from "@/components/PropertyActions/RentCastGetProperty";
+import RentCastGetPropertyValue from "@/components/PropertyActions/RentCastPropertyValue";
 import { redirect } from "next/navigation";
 
 export default async function CardApplicationDetails({
@@ -46,6 +47,14 @@ export default async function CardApplicationDetails({
   const rentCastData = await prisma.rentCastPropertyData.findFirst({
     where: {
       addressId: cardApplication.currentAddress.id,
+    },
+  });
+  const rentCastVal = await prisma.rentCastPropertyValue.findFirst({
+    where: {
+      addressId: cardApplication.currentAddress.id,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
@@ -138,6 +147,10 @@ export default async function CardApplicationDetails({
                 addressId={cardApplication.currentAddress.id}
                 apiSecretKey={env.API_SECRET_KEY}
               />
+              <RentCastGetPropertyValue
+                addressId={cardApplication.currentAddress.id}
+                apiSecretKey={env.API_SECRET_KEY}
+              />
             </div>
           </div>
         )}
@@ -180,6 +193,29 @@ export default async function CardApplicationDetails({
               <div>
                 <span className="font-semibold">County:</span>
                 <span className="ml-2">{rentCastData.county}</span>
+              </div>
+            </div>
+          </div>
+        )}
+        {rentCastVal && (
+          <div className="rounded-lg bg-white p-6 shadow lg:col-span-2">
+            <h2 className="mb-4 text-xl font-semibold">RentCast Value</h2>
+            <div>
+              <span className="font-semibold">Pulled on:</span>
+              <span className="ml-2">
+                {rentCastVal.createdAt.toDateString()}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <span className="font-semibold">Price:</span>
+                <span className="ml-2">{rentCastVal.price}</span>
+              </div>
+              <div>
+                <span className="font-semibold">Price Range:</span>
+                <span className="ml-2">
+                  {rentCastVal.priceRangeLow} - {rentCastVal.priceRangeHigh}
+                </span>
               </div>
             </div>
           </div>
