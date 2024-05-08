@@ -4,7 +4,7 @@ import BookTransferBnt from "./BookTransferBnt";
 import GetAccINfo from "./GetAccInfo";
 import GetAccBalance from "./GetAccBalance";
 import { prisma } from "@/lib/db/prisma";
-import { addr_type } from "@prisma/client";
+// import { addr_type } from "@prisma/client";
 import PersonData from "./PersonData";
 
 export default async function TpPage() {
@@ -14,17 +14,17 @@ export default async function TpPage() {
     },
     include: {
       account: true,
-      address: {
-        where: { address_type: addr_type.Physical },
-        select: {
-          street_line_1: true,
-          street_line_2: true,
-          city: true,
-          state: true,
-          postal_code: true,
-          country: true,
-        },
-      },
+      // address: {
+      //   where: { address_type: addr_type.Physical },
+      //   select: {
+      //     street_line_1: true,
+      //     street_line_2: true,
+      //     city: true,
+      //     state: true,
+      //     postal_code: true,
+      //     country: true,
+      //   },
+      // },
     },
   });
 
