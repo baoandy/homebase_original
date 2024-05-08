@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db/prisma";
-import { addr_type } from "@prisma/client";
+// import { addr_type } from "@prisma/client";
 import { NextResponse, NextRequest } from "next/server";
 import treasuryPrimeApiCall from "@/lib/helper/treasuryPrimeApiCall";
 import { env } from "@/lib/env";
