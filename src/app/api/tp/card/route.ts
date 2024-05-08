@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db/prisma";
-import { addr_type } from "@prisma/client"; //
+// import { addr_type } from "@prisma/client"; //
 import treasuryPrimeApiCall from "@/lib/helper/treasuryPrimeApiCall";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -15,17 +15,17 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
       include: {
         account: true,
-        address: {
-          where: { address_type: addr_type.Physical },
-          select: {
-            street_line_1: true,
-            street_line_2: true,
-            city: true,
-            state: true,
-            postal_code: true,
-            country: true,
-          },
-        },
+        // address: {
+        //   where: { address_type: addr_type.Physical },
+        //   select: {
+        //     street_line_1: true,
+        //     street_line_2: true,
+        //     city: true,
+        //     state: true,
+        //     postal_code: true,
+        //     country: true,
+        //   },
+        // },
       },
     });
 
