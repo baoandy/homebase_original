@@ -145,7 +145,7 @@ export default function Example() {
                 >
                   <circle cx={1} cy={1} r={1} />
                 </svg>
-                You Earned 1,000 Points in April!
+                You Earned 1,000 Points in April! 🎉
               </a>
             </p>
           </div>
