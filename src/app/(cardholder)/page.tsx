@@ -13,6 +13,7 @@ import PartnersCarusel from "@/components/LandingPage/PartnersCarusel";
 import DisplayWaitListButton from "@/components/LandingPage/waitlist/DisplayWaitListButton";
 import JoinWaitlistModal from "@/components/LandingPage/waitlist/JoinWaitListButton/JoinWaitListModal";
 import Footer from "@/components/LandingPage/Footer";
+import Disclaimer from "@/components/LandingPage/Disclaimer";
 
 export default async function Home() {
   return (
@@ -29,6 +30,7 @@ export default async function Home() {
         <DisplayWaitListButton className="" apiSecretKey={env.API_SECRET_KEY} />
       </div>
       <Faq />
+      <Disclaimer />
       <Footer />
     </main>
   );
