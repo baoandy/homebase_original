@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import PaymentHistory from "./PaymentHistory";
 import PropertyValuePie from "./PropertyValuePie";
+import Chart from "./HomePriceChart";
 
 interface TabDisplayProps {
   equity: number;
@@ -73,7 +74,10 @@ const TabDisplay = ({ equity, mortgage }: TabDisplayProps) => {
                 </div>
               </div>
               {open === "property-value" && (
-                <PropertyValuePie equity={equity} mortgage={mortgage} />
+                <div className="">
+                  <PropertyValuePie equity={equity} mortgage={mortgage} />
+                  <Chart />
+                </div>
               )}
               {open === "payment-history" && <PaymentHistory />}
             </div>
