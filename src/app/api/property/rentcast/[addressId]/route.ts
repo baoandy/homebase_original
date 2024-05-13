@@ -42,7 +42,11 @@ export async function GET(
       const propData = data[0];
       const savedProperty = await prisma.rentCastPropertyData.create({
         data: {
-          addressId: propData.addressId,
+          Address: {
+            connect: {
+              id: property.id,
+            },
+          },
           rentCastId: propData.id,
           formattedAddress: propData.formattedAddress,
           addressLine1: propData.addressLine1,

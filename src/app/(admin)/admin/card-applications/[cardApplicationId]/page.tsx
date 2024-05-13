@@ -9,6 +9,8 @@ import CreateSavingsApplication from "./CreateSavingsAccount";
 import RefreshAccountStatus from "./RefreshAccountStatus";
 import ActivateUser from "./ActivateUser";
 import RentCastGetProperty from "@/components/PropertyActions/RentCastGetProperty";
+import RentCastGetPropertyValue from "@/components/PropertyActions/RentCastPropertyValue";
+import { redirect } from "next/navigation";
 
 export default async function CardApplicationDetails({
   params,
@@ -21,7 +23,7 @@ export default async function CardApplicationDetails({
     include: { user: true, currentAddress: true },
   });
 
-  if (!cardApplication) {
+  if (!cardApplication || !cardApplication.currentAddress) {
     return <div>Not Found</div>;
   }
   const checkingAccount = await prisma.accountApplication.findFirst({
@@ -39,6 +41,20 @@ export default async function CardApplicationDetails({
   const personApplication = await prisma.personApplication.findFirst({
     where: {
       userId: cardApplication.userId,
+    },
+  });
+
+  const rentCastData = await prisma.rentCastPropertyData.findFirst({
+    where: {
+      addressId: cardApplication.currentAddress.id,
+    },
+  });
+  const rentCastVal = await prisma.rentCastPropertyValue.findFirst({
+    where: {
+      addressId: cardApplication.currentAddress.id,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
@@ -131,6 +147,76 @@ export default async function CardApplicationDetails({
                 addressId={cardApplication.currentAddress.id}
                 apiSecretKey={env.API_SECRET_KEY}
               />
+              <RentCastGetPropertyValue
+                addressId={cardApplication.currentAddress.id}
+                apiSecretKey={env.API_SECRET_KEY}
+              />
+            </div>
+          </div>
+        )}
+        {rentCastData && (
+          <div className="rounded-lg bg-white p-6 shadow lg:col-span-2">
+            <h2 className="mb-4 text-xl font-semibold">RentCast Data</h2>
+            <div>
+              <span className="font-semibold">Pulled on:</span>
+              <span className="ml-2">
+                {rentCastData.createdAt.toDateString()}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <span className="font-semibold">RentCast ID:</span>
+                <span className="ml-2">{rentCastData.rentCastId}</span>
+              </div>
+              <div>
+                <span className="font-semibold">Formatted Address:</span>
+                <span className="ml-2">{rentCastData.formattedAddress}</span>
+              </div>
+              <div>
+                <span className="font-semibold">Property Type:</span>
+                <span className="ml-2">{rentCastData.propertyType}</span>
+              </div>
+              <div>
+                <span className="font-semibold">Bedrooms:</span>
+                <span className="ml-2">{rentCastData.bedrooms}</span>
+                <br />
+                <span className="font-semibold">Bathrooms:</span>
+                <span className="ml-2">{rentCastData.bathrooms}</span>
+              </div>
+              <div>
+                <span className="font-semibold">Latitude:</span>
+                <span className="ml-2">{rentCastData.latitude}</span>
+                <br />
+                <span className="font-semibold">Longitude:</span>
+                <span className="ml-2">{rentCastData.longitude}</span>
+              </div>
+              <div>
+                <span className="font-semibold">County:</span>
+                <span className="ml-2">{rentCastData.county}</span>
+              </div>
+            </div>
+          </div>
+        )}
+        {rentCastVal && (
+          <div className="rounded-lg bg-white p-6 shadow lg:col-span-2">
+            <h2 className="mb-4 text-xl font-semibold">RentCast Value</h2>
+            <div>
+              <span className="font-semibold">Pulled on:</span>
+              <span className="ml-2">
+                {rentCastVal.createdAt.toDateString()}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <span className="font-semibold">Price:</span>
+                <span className="ml-2">{rentCastVal.price}</span>
+              </div>
+              <div>
+                <span className="font-semibold">Price Range:</span>
+                <span className="ml-2">
+                  {rentCastVal.priceRangeLow} - {rentCastVal.priceRangeHigh}
+                </span>
+              </div>
             </div>
           </div>
         )}

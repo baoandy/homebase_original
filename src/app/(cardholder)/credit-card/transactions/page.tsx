@@ -22,6 +22,10 @@ export default function Example() {
     })),
   ];
   return (
-    <TransactionTable transactions={transactions} statementDay={statementDay} />
+    <TransactionTable
+      transactions={transactions}
+      statementDay={statementDay}
+      showOnlyRecent={false}
+    />
   );
 }

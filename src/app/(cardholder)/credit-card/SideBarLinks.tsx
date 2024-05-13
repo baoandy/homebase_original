@@ -1,7 +1,7 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { LucideIcon, HomeIcon, Coins } from "lucide-react";
+import { LucideIcon, HomeIcon, Coins, CreditCardIcon } from "lucide-react";
 
 // interface SideBarLinkProps {
 //   href: string;
@@ -65,6 +65,32 @@ export default function SideBarLinks() {
                 />
               </svg>
               Home
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/credit-card/card"
+              className={
+                pathname === "/credit-card/card" ? onActiveClass : onHoverClass
+              }
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className={
+                  pathname === "/credit-card/card" ? svgActive : svgHover
+                }
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
+                />
+              </svg>
+              Card
             </Link>
           </li>
           {/* Pay Mortgage Component */}
@@ -191,39 +217,8 @@ export default function SideBarLinks() {
               Payment Accounts
             </Link>
           </li>
-          <li>
-            <Link
-              href="/credit-card/mortgage-details"
-              className={
-                pathname === "/credit-card/mortgage-details"
-                  ? onActiveClass
-                  : onHoverClass
-              }
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className={
-                  pathname === "/credit-card/mortgage-details"
-                    ? svgActive
-                    : svgHover
-                }
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-                />
-              </svg>
-              Mortgage Details
-            </Link>
-          </li>
         </ul>
       </li>
-      <li></li>
     </ul>
   );
 }
